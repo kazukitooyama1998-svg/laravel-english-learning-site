@@ -11,7 +11,7 @@
         </h1>
 
         <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-            Focus on IELTS Writing Task 2 templates to build muscle memory.
+            Practice professional templates to build muscle memory for the real world.
         </p>
     </section>
 
@@ -104,11 +104,11 @@
             </h2>
 
             <p class="font-body-md text-body-md text-on-primary-container opacity-90">
-                Consistent repetition of these structures increases your typing speed and grammatical accuracy for the real test.
+                Consistent repetition of these structures increases your typing speed and grammatical accuracy for the real test. It also helps you internalize effective sentence patterns, academic and professional expressions, and advanced vocabulary drawn from business correspondence, formal communication, notable speeches by influential figures, and exam preparation materials for standardized tests.
             </p>
         </div>
 
-        <div class="relative w-48 h-48 flex items-center justify-center">
+        <div class="relative w-48 h-48 shrink-0 flex items-center justify-center">
             <svg class="w-full h-full transform -rotate-90">
                 <circle class="text-on-primary-container/20" cx="96" cy="96" r="80" stroke="currentColor" stroke-width="8" fill="transparent"></circle>
                 <circle class="text-on-primary-container" cx="96" cy="96" r="80" stroke="currentColor"
@@ -120,7 +120,7 @@
 
             <div class="absolute inset-0 flex flex-col items-center justify-center">
                 <span class="font-display text-display text-on-primary-container">{{ $progress ?? '75' }}%</span>
-                <span class="font-label-md text-label-md text-on-primary-container">Weekly Goal</span>
+                <span class="font-label-md text-label-md text-on-primary-container">Materials Completed</span>
             </div>
         </div>
 

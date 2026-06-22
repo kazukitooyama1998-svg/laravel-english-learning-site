@@ -6,23 +6,26 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
 
-    @vite(['resources/js/app.js'])
+    @vite(['resources/css/app.css','resources/js/app.js'])
 
+    {{-- Google Fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    {{-- Material Symbols（Google製のアイコン） --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    
+    <!-- fontawesome cdn -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    {{-- Tailwind CSS --}}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
     <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
+      theme: {                              //// サイト全体の見た目に関する設定
+        extend: {                           //// デフォルトのデザインを「消さずに、新しく追加（拡張）」 
+          colors: {                         //// 色設定
             "inverse-surface": "#3d2d27",
             "tertiary-container": "#0078c7",
             "tertiary-fixed": "#d1e4ff",
@@ -56,7 +59,7 @@
             "on-background": "#261813",
             "surface-variant": "#f8ddd4",
             "surface-container": "#ffe9e2",
-            "primary": "#a33900", // ← これがFocusTypeの本来の鮮やかなオレンジです
+            "primary": "#a33900", 
             "on-secondary-fixed-variant": "#53433c",
             "tertiary-fixed-dim": "#9ecaff",
             "on-tertiary-fixed": "#001d36",
@@ -71,20 +74,20 @@
             "surface-container-low": "#fff1ec",
             "surface-container-highest": "#f8ddd4"
           },
-          borderRadius: {
+          borderRadius: {           //// ボタンやカードのRadius設定
             DEFAULT: "0.125rem",
             lg: "0.25rem",
             xl: "0.5rem",
             full: "0.75rem"
           },
-          spacing: {
+          spacing: {                //// スペース設定
             "margin-mobile": "16px",
             "container-max": "1280px",
             "gutter": "24px",
             "base": "4px",
             "margin-desktop": "40px"
           },
-          fontFamily: {
+          fontFamily: {             //// fontFamily設定
             "headline-md": ["Public Sans"],
             "body-md": ["Public Sans"],
             "caption": ["Public Sans"],
@@ -94,7 +97,7 @@
             "label-md": ["Public Sans"],
             "body-lg": ["Public Sans"]
           },
-          fontSize: {
+          fontSize: {               //// fontSize設定
             "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
             "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
             "caption": ["12px", { lineHeight: "16px", fontWeight: "400" }],
