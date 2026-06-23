@@ -14,7 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
     {{-- Material Symbols（Google製のアイコン） --}}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <!-- fontawesome cdn -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     {{-- Tailwind CSS --}}
@@ -136,38 +135,68 @@
                     <span class="text-xl font-bold tracking-tight text-[#261813]">FocusType</span>
                 </a>
 
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 ml-auto">
                     @guest
                         @if (Route::has('login'))
-                            <a href="{{ route('login') }}" class="text-sm font-medium text-on-surface-variant hover:text-primary no-underline px-3 py-2 rounded-md transition-colors">
+                            <a href="{{ route('login') }}" class="text-base font-medium text-on-surface-variant hover:text-primary no-underline px-3 py-2 rounded-md transition-colors">
                                 Login
                             </a>
                         @endif
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="text-sm font-medium text-on-primary bg-primary hover:opacity-90 no-underline px-4 py-2 rounded-xl shadow-sm transition-colors">
+                            <a href="{{ route('register') }}" class="text-base font-medium text-on-primary bg-primary hover:opacity-90 no-underline px-4 py-2 rounded-xl shadow-sm transition-colors">
                                 Register
                             </a>
                         @endif
                     @else
-                        <div class="flex items-center gap-2 px-3 py-2 bg-surface-container-low rounded-xl border border-outline-variant/30">
-                            <span class="text-xs">👤</span>
-                            <span class="text-sm font-medium text-on-surface-variant">
+                        <div class="flex items-center gap-2 px-4 py-2.5 bg-surface-container-low rounded-xl border border-outline-variant/30">
+                            <span class="text-sm">👤</span>
+                            <span class="text-base font-medium text-on-surface-variant">
                                 {{ Auth::user()->name }}
                             </span>
                         </div>
 
                         <a href="{{ route('logout') }}" 
-                        class="text-sm font-medium text-error hover:text-error/80 no-underline px-3 py-2 rounded-xl hover:bg-error-container/50 transition-colors"
+                        class="text-base font-medium text-error hover:text-error/80 no-underline px-4 py-2.5 rounded-xl hover:bg-error-container/50 transition-colors"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Logout
                         </a>
+
+                        <button id="menu-trigger-btn" class="flex flex-col items-center justify-center size-14 bg-primary hover:opacity-90 text-on-primary rounded-full shadow-md transition-all focus:outline-none ml-2" type="button">
+                            <div class="flex flex-col gap-1.5 justify-center items-center w-6 h-3">
+                                <span class="block w-full h-[3px] bg-current rounded-full"></span>
+                                <span class="block w-full h-[3px] bg-current rounded-full"></span>
+                            </div>
+                            <span class="text-[10px] font-bold tracking-wider mt-0.5 uppercase leading-none">Menu</span>
+                        </button>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     @endguest
                 </div>
+
+                <div id="custom-drawer" class="fixed top-0 right-0 h-full w-[280px] border-l border-outline-variant/30 z-[9999] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl" style="background: #fff1ec !important; opacity: 1 !important; mix-blend-mode: normal !important;">
+                    <div class="flex items-center justify-between p-5 border-b border-outline-variant/20">
+                        <h5 class="font-bold text-on-surface text-lg">Menu</h5>
+                        <button id="menu-close-btn" class="p-1 text-on-surface hover:bg-surface-container rounded-lg transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col gap-2" style="background: #fff1ec !important;">
+                        <a href="{{ Route::has('ranking') ? route('ranking') : '#' }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
+                            <i class="fa-solid fa-trophy w-6 text-on-surface opacity-100"></i>Ranking
+                        </a>
+                        <a href="{{ Route::has('friends') ? route('friends') : '#' }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
+                            <i class="fa-solid fa-user-group w-6 text-on-surface opacity-100"></i>Friends
+                        </a>
+                        <a href="{{ Route::has('profile') ? route('profile') : '#' }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
+                            <i class="fa-solid fa-user w-6 text-on-surface opacity-100"></i>Profile
+                        </a>
+                    </div>
+                </div>
+                
+                <div id="drawer-overlay" class="fixed inset-0 bg-black/40 z-[9990] hidden transition-opacity"></div>
 
             </div>
         </nav>
@@ -182,5 +211,31 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const trigger = document.getElementById('menu-trigger-btn');
+            const close = document.getElementById('menu-close-btn');
+            const drawer = document.getElementById('custom-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+
+            if (trigger && drawer) {
+                // 開く処理
+                trigger.addEventListener('click', function () {
+                    drawer.classList.remove('translate-x-full');
+                    overlay.classList.remove('hidden');
+                });
+
+                // 閉じる処理
+                const closeMenu = function () {
+                    drawer.classList.add('translate-x-full');
+                    overlay.classList.add('hidden');
+                };
+
+                if (close) close.addEventListener('click', closeMenu);
+                if (overlay) overlay.addEventListener('click', closeMenu);
+            }
+        });
+    </script>
 </body>
 </html>
