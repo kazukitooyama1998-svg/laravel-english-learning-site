@@ -187,10 +187,10 @@
                         <a href="{{ route('ranking.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
                             <i class="fa-solid fa-trophy w-6 text-on-surface opacity-100"></i>Ranking
                         </a>
-                        <a href="{{ route('friends.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
-                            <i class="fa-solid fa-user-group w-6 text-on-surface opacity-100"></i>Friends
+                        <a href="{{ route('partners.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
+                            <i class="fa-solid fa-user-group w-6 text-on-surface opacity-100"></i>Language Partners
                         </a>
-                        <a href="{{ Route::has('profile') ? route('profile') : '#' }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
+                        <a href="{{ route('profile.show') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
                             <i class="fa-solid fa-user w-6 text-on-surface opacity-100"></i>Profile
                         </a>
                     </div>

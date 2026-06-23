@@ -34,6 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chat_rooms_and_messages_tables');
+        Schema::dropIfExists('messages');
+        Schema::dropIfExists('chat_rooms');
     }
 };

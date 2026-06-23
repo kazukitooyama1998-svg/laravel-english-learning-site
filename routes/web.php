@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\RecordController;
-use App\Http\Controllers\FriendController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController; // 💡Admin用コントローラー（例）　後で\Adminを加える必要があるか確認
 
 /*
@@ -39,16 +40,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 💡新規：マイページ・学習履歴一覧
     Route::get('/history', [RecordController::class, 'index'])->name('history');
 
-    // --- Friend ---
-    Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
-    Route::post('/friends/{friend_id}/add', [FriendController::class, 'add'])->name('friends.add');
-    Route::post('/friends/{friend_id}/remove', [FriendController::class, 'remove'])->name('friends.remove');
+    // --- Partner---
+    Route::get('/partners', [FollowController::class, 'index'])->name('partners.index');
+    Route::post('/follow/{id}', [FollowController::class, 'follow'])->name('follow');
+    Route::post('/unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
 
-    // --- Friend限定メッセージ関連---
-    // チャット画面（特定の部屋を表示）
+    // --- チャット関連 ---
+    // 相互フォロー関係をチェックしてチャットを開始する仲介ルート
+    Route::get('/partners/{id}/chat', [FollowController::class, 'startChat'])->name('partners.chat');
+
+    // チャット画面
     Route::get('/chat/{room_id}', [MessageController::class, 'show'])->name('chat.show');
-    // メッセージ送信処理
     Route::post('/chat/{room_id}/message', [MessageController::class, 'store'])->name('message.store');
+
+    // Profile
+    Route::get('/profile', [UserController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
 });
 
 /*
