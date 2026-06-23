@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Record extends Model
 {
     // 一括保存を許可するカラムを指定
-    protected $fillable = ['user_id', 'practice_id', 'wpm', 'accuracy'];
+    protected $fillable = ['user_id', 'practice_id', 'wpm', 'accuracy','clear_time'];
 
     // 💡 多対1：この履歴は特定のユーザーのもの
     public function user()

@@ -19,6 +19,7 @@ return new class extends Migration
             
             $table->integer('wpm')->comment('タイピング速度');
             $table->integer('accuracy')->comment('正答率 0-100');
+            $table->decimal('clear_time', 8, 2)->comment('クリア時間（秒）');
             $table->timestamps(); // created_at がそのまま「練習日時」になります
             });
     }
