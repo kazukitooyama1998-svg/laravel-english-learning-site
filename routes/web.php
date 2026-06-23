@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\RecordController;
-use App\Http\Controllers\FollowController;
+use App\Http\Controllers\FriendController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\RankingController;
 use App\Http\Controllers\UsersController; // 💡Admin用コントローラー（例）　後で\Adminを加える必要があるか確認
 
 /*
@@ -31,24 +32,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [PracticeController::class, 'index'])->name('dashboard');
     // タイピング練習画面
     Route::get('/practice/{id}', [PracticeController::class, 'show'])->name('practice.show');
+    // ランキング画面
+    Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index');
     // 💡新規：タイピング結果の保存（1対多リレーションの要件用）
     Route::post('/practice/{id}/result', [RecordController::class, 'store'])->name('record.store');
     // 💡新規：マイページ・学習履歴一覧
     Route::get('/history', [RecordController::class, 'index'])->name('history');
 
-    // --- ユーザー・フォロー関連（多対多リレーションの要件用） ---
-    // ユーザー一覧画面（ここでフォローしたり検索したりする）
-    Route::get('/users', [HomeController::class, 'usersIndex'])->name('users.index'); // 💡一般側にも必要
-    // フォローする・外す処理
-    Route::post('/user/{id}/follow', [FollowController::class, 'store'])->name('follow.store');
-    Route::delete('/user/{id}/unfollow', [FollowController::class, 'destroy'])->name('follow.destroy');
+    // --- Friend ---
+    Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+    Route::post('/friends/{friend_id}/add', [FriendController::class, 'add'])->name('friends.add');
+    Route::post('/friends/{friend_id}/remove', [FriendController::class, 'remove'])->name('friends.remove');
 
-    // --- 相互フォロー限定メッセージ関連（1対多リレーションの要件用） ---
+    // --- Friend限定メッセージ関連---
     // チャット画面（特定の部屋を表示）
     Route::get('/chat/{room_id}', [MessageController::class, 'show'])->name('chat.show');
     // メッセージ送信処理
     Route::post('/chat/{room_id}/message', [MessageController::class, 'store'])->name('message.store');
-
 });
 
 /*

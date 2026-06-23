@@ -19,22 +19,10 @@ class User extends Authenticatable
         return $this->hasMany(Record::class);
     }
 
-    // 💡 多対多：自分がフォローしているユーザー一覧
-    public function followings()
+    public function friends()
     {
-        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id')->withTimestamps();
-    }
-
-    // 💡 多対多：自分をフォローしてくれているユーザー（フォロワー）一覧
-    public function followers()
-    {
-        return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id')->withTimestamps();
-    }
-
-    // 💡 補助メソッド：すでにフォローしているか判定する（画面のボタン切り替え用）
-    public function isFollowing($userId)
-    {
-        return $this->followings()->where('following_id', $userId)->exists();
+        // friendsテーブルを中間テーブルとして、他のUserモデルと繋ぐ
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')->withTimestamps();
     }
 
     /**
