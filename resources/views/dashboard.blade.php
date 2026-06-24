@@ -24,7 +24,7 @@
                 <div>
                     <div class="flex justify-between items-start mb-4">
                         <span class="bg-surface-container-highest text-on-secondary-container px-3 py-1 rounded-lg font-caption text-caption uppercase tracking-wider">
-                            {{ $practice->category }}
+                            {{ $practice->category->name }}
                         </span>
                         <span class="material-symbols-outlined text-primary">description</span>
                     </div>
@@ -109,18 +109,37 @@
         </div>
 
         <div class="relative w-48 h-48 shrink-0 flex items-center justify-center">
-            <svg class="w-full h-full transform -rotate-90">
-                <circle class="text-on-primary-container/20" cx="96" cy="96" r="80" stroke="currentColor" stroke-width="8" fill="transparent"></circle>
-                <circle class="text-on-primary-container" cx="96" cy="96" r="80" stroke="currentColor"
-                    stroke-dasharray="502.4"
-                    stroke-dashoffset="125.6"
-                    stroke-width="8"
-                    fill="transparent"></circle>
+            {{-- 進捗率に応じてメータを変動 --}}
+            @php
+                $circumference = 502.4;
+                // 0%の時にオフセットを円周より少し大きくすることで、完全に隠れます
+                $offset = ($progress <= 0) ? $circumference + 1 : ($circumference - ($progress / 100 * $circumference));
+            @endphp
+
+            <svg class="w-48 h-48 transform -rotate-90">
+                <circle class="text-white opacity-20" 
+                        cx="96" cy="96" r="80" 
+                        stroke="currentColor" stroke-width="8" fill="transparent"></circle>
+                
+                <circle class="text-white transition-all duration-500 ease-out" 
+                        cx="96" cy="96" 
+                        r="80" 
+                        stroke="currentColor"
+                        stroke-width="8"
+                        fill="transparent"
+                        stroke-dasharray="{{ $circumference }}"
+                        stroke-dashoffset="{{ $offset }}"
+                        stroke-linecap="round"></circle>
             </svg>
 
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span class="font-display text-display text-on-primary-container">{{ $progress ?? '75' }}%</span>
-                <span class="font-label-md text-label-md text-on-primary-container">Materials Completed</span>
+                {{-- 進捗率を表示。変数が存在しない場合は 0% を表示するように設定 --}}
+                <span class="font-display text-display text-on-primary-container">
+                    {{ isset($progress) ? $progress : 0 }}%
+                </span>
+                <span class="font-label-md text-label-md text-on-primary-container">
+                    Materials Completed
+                </span>
             </div>
         </div>
 

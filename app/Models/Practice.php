@@ -13,7 +13,7 @@ class Practice extends Model
 
     // データベースに保存を許可するカラムを指定
     protected $fillable = [
-        'category',
+        'category_id',
         'title',
         'level',
         'prompt',
@@ -24,5 +24,10 @@ class Practice extends Model
     public function records()
     {
         return $this->hasMany(Record::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

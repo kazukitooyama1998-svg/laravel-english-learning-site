@@ -35,6 +35,11 @@ class User extends Authenticatable
             $this->followers()->where('follower_id', $userId)->exists();
     }
 
+    public function studyLogs()
+    {
+        return $this->hasMany(StudyLog::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

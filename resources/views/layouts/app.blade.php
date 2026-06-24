@@ -118,10 +118,18 @@
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
+
+    #custom-drawer {
+        right: 0;
+        transition: transform 0.3s ease-in-out;
+    }
+    #custom-drawer.translate-x-full {
+        transform: translateX(100%);
+    }
   </style>
 </head>
-<body class="bg-surface text-on-surface">
-    <div id="app" class="min-h-screen flex flex-col">
+<body class="bg-surface text-on-surface overflow-x-hidden">
+    <div id="app" class="min-h-screen flex flex-col w-full overflow-x-hidden">
         
         <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-outline-variant/20">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -224,12 +232,14 @@
                 trigger.addEventListener('click', function () {
                     drawer.classList.remove('translate-x-full');
                     overlay.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden'; // ★ここを追加：スクロール固定
                 });
 
                 // 閉じる処理
                 const closeMenu = function () {
                     drawer.classList.add('translate-x-full');
                     overlay.classList.add('hidden');
+                    document.body.style.overflow = ''; // ★ここを追加：スクロール固定解除
                 };
 
                 if (close) close.addEventListener('click', closeMenu);

@@ -11,9 +11,7 @@
             <div class="flex flex-col items-center text-center gap-6">
                 {{-- アバター --}}
                 @if ($user->avatar)
-                    <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}" 
-                     alt="{{ $user->name }}" 
-                     class="w-32 h-32 rounded-full border-4 border-primary/20 object-cover">
+                    <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="w-20 h-20 rounded-full object-cover">
                 @else
                     <i class="fa-solid fa-circle-user text-secondary d-block text-center icon-lg"></i>
                 @endif
@@ -34,27 +32,34 @@
         </div>
 
         {{-- 学習履歴セクション --}}
-        <div class="mt-8">
-            <h2 class="text-title-lg font-bold text-on-surface mb-6">Recent Study Activity</h2>
-            
-            <div class="bg-surface-container-low rounded-xl border border-outline-variant p-6 shadow-sm">
-                @if(is_countable($studyLogs) && count($studyLogs) > 0)
-                    <ul class="space-y-4">
-                        @foreach ($studyLogs as $log)
-                            <li class="flex items-center justify-between py-3 border-b border-outline-variant last:border-0">
-                                <span class="text-body-md font-medium text-on-surface">{{ $log->topic }}</span>
-                                <span class="text-label-md text-on-surface-variant">{{ $log->created_at->format('M d, Y') }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <div class="text-center py-10">
-                        <p class="text-on-surface-variant">No learning activity yet.</p>
-                        <p class="text-sm text-on-surface-variant mt-2">Start your journey today!</p>
+        <ul class="space-y-4 mt-5">
+            @foreach ($studyLogs as $log)
+                <li class="py-4 border-b border-outline-variant last:border-0">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            {{-- タイトルとレベル --}}
+                            <span class="block text-body-md font-bold text-on-surface">
+                                {{ $log->practice->title ?? 'Unknown Practice' }}
+                            </span>
+                            <span class="text-xs px-2 py-0.5 bg-surface-variant rounded-full text-on-surface-variant">
+                                Level: {{ $log->practice->level ?? '-' }}
+                            </span>
+                        </div>
+                        {{-- 日時 --}}
+                        <span class="text-label-md text-on-surface-variant">
+                            {{ $log->created_at->format('M d, Y') }}
+                        </span>
                     </div>
-                @endif
-            </div>
-        </div>
+                    
+                    {{-- パラメータ類 --}}
+                    <div class="flex gap-4 mt-2 text-sm text-on-surface-variant">
+                        <span>WPM: <strong class="text-on-surface">{{ $log->wpm }}</strong></span>
+                        <span>Accuracy: <strong class="text-on-surface">{{ $log->accuracy }}%</strong></span>
+                        <span>Time: <strong class="text-on-surface">{{ $log->clear_time }}s</strong></span>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
 
     </div>
 </main>

@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Profile
     Route::get('/profile', [UserController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/update', [UserController::class, 'update'])->name('profile.update');
 });
 
 /*

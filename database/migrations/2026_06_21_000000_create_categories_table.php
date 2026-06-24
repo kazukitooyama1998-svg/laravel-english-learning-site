@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('follows', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) 
+        {
             $table->id();
-            $table->foreignId('follower_id')->constrained('users')->onDelete('cascade'); // フォローする人
-            $table->foreignId('following_id')->constrained('users')->onDelete('cascade'); // フォローされる人
+            $table->string('name')->unique(); // 重複しないように unique を推奨
             $table->timestamps();
-            $table->unique(['follower_id', 'following_id']); // 二重フォロー防止
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('follows');
+        Schema::dropIfExists('categories');
     }
 };

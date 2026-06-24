@@ -11,7 +11,7 @@ class PracticeSeeder extends Seeder
     {
         // ⚡️ Debug Test (開発・動作確認用)
         Practice::create([
-            'category' => 'Debug Test',
+            'category_id' => 1,
             'title' => '⚡️ Quick Test Practice',
             'level' => 'Beginner',
             'prompt' => 'This is a short dataset for rapid testing purposes.',
@@ -20,7 +20,7 @@ class PracticeSeeder extends Seeder
 
         // 📚 IELTS Speaking: Education (5問セット)
         Practice::create([
-            'category' => 'IELTS Speaking',
+            'category_id' => 2,
             'title' => 'Part 3: Education',
             'level' => 'Intermediate',
             'prompt' => 'Answer 5 high-frequency questions about Education in IELTS Speaking Part 3.',
@@ -33,7 +33,7 @@ class PracticeSeeder extends Seeder
 
         // 💻 IELTS Speaking: Technology (5問セット)
         Practice::create([
-            'category' => 'IELTS Speaking',
+            'category_id' => 2,
             'title' => 'Part 3: Technology',
             'level' => 'Intermediate',
             'prompt' => 'Answer 5 high-frequency questions about Technology in IELTS Speaking Part 3.',
@@ -46,7 +46,7 @@ class PracticeSeeder extends Seeder
 
         // 🌱 IELTS Speaking: Environment (5問セット)
         Practice::create([
-            'category' => 'IELTS Speaking',
+            'category_id' => 2,
             'title' => 'Part 3: Environment',
             'level' => 'Intermediate',
             'prompt' => 'Answer 5 high-frequency questions about Environment in IELTS Speaking Part 3.',
