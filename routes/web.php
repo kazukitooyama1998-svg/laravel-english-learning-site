@@ -74,6 +74,9 @@ Route::middleware(['auth', 'admin'])
         Route::get('/users', [UsersController::class, 'index'])->name('users');
         Route::get('/search', [UsersController::class, 'search'])->name('search');
         
-        // 💡ここに今後「お題の追加・論理削除（SoftDelete）」のルートを追加していくと綺麗です
-        // Route::delete('/practice/{id}', [AdminPracticeController::class, 'destroy'])->name('practice.destroy');
+        // アカウントのアクティブ切り替え
+        Route::patch('/users/{id}/activate', [UsersController::class, 'activate'])->name('users.activate');
+        Route::delete('/users/{id}/deactivate', [UsersController::class, 'deactivate'])->name('users.deactivate');
+
+        // 今後Postもアクティブ切り替え検討
     });

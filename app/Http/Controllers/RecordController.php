@@ -25,31 +25,49 @@ class RecordController extends Controller
      */
     public function store(Request $request, $id)
     {
-        // 1. 教材の存在チェック（なければ最初の1件目を仮取得するか、IDをそのまま使う）
+        // ログで受け取ったIDを確認
+        \Log::info('Received $id: ' . $id);
+        
         $practice = Practice::find($id);
-        $practiceId = $practice ? $practice->id : $id;
+        
+        // ログで検索した教材のIDを確認
+        \Log::info('Found practice ID: ' . ($practice ? $practice->id : 'null'));
 
-        // 2. バリデーション
-        $validated = $request->validate([
-            'wpm'        => 'required|integer|min:0',
-            'accuracy'   => 'required|numeric|min:0|max:100',
-            'clear_time' => 'required|numeric|min:0', 
-        ]);
+        // バリデーション...
+        try {
+            $validated = $request->validate([
+                'wpm'        => 'required|integer|min:0',
+                'accuracy'   => 'required|numeric|min:0|max:100',
+                'clear_time' => 'required|numeric|min:0', 
+            ]);
+            \Log::info('Validation passed.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation failed: ' . json_encode($e->errors()));
+            throw $e;
+        }
 
-        // 3. データ保存（一括代入）
-        $record = $this->recordModel->create([
-            'user_id'     => Auth::id() ?? 1, // ログインしていなければ仮でユーザーID: 1
-            'practice_id' => $practiceId,     // 確実にIDをセット
-            'wpm'         => $validated['wpm'],
-            'accuracy'    => $validated['accuracy'],
-            'clear_time'  => $validated['clear_time'], 
-        ]);
+        // 保存処理...
+        try {
+            $data = [
+                'user_id'     => Auth::id() ?? 1,
+                'practice_id' => $id,
+                'wpm'         => $validated['wpm'],
+                'accuracy'    => $validated['accuracy'],
+                'clear_time'  => $validated['clear_time'], 
+            ];
+            
+            $record = $this->recordModel->create($data);
+            \Log::info('Record created successfully: ' . $record->id);
 
-        // 4. レスポンスを返す
-        return response()->json([
-            'success' => true,
-            'message' => 'Result recorded successfully!',
-            'data'    => $record
-        ], 201);
+            return response()->json([
+                'success' => true,
+                'message' => 'Result recorded successfully!',
+                'data'    => $record
+            ], 201);
+
+        } catch (\Exception $e) {
+            \Log::error('Database save failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Server Error: ' . $e->getMessage()], 500);
+        }
     }
 }

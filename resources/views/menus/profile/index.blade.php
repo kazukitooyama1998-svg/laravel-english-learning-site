@@ -30,14 +30,12 @@
                 </div>
             </div>
         </div>
-
         {{-- 学習履歴セクション --}}
         <ul class="space-y-4 mt-5">
-            @foreach ($studyLogs as $log)
+            @forelse ($studyLogs as $log)
                 <li class="py-4 border-b border-outline-variant last:border-0">
                     <div class="flex justify-between items-start mb-2">
                         <div>
-                            {{-- タイトルとレベル --}}
                             <span class="block text-body-md font-bold text-on-surface">
                                 {{ $log->practice->title ?? 'Unknown Practice' }}
                             </span>
@@ -45,20 +43,25 @@
                                 Level: {{ $log->practice->level ?? '-' }}
                             </span>
                         </div>
-                        {{-- 日時 --}}
                         <span class="text-label-md text-on-surface-variant">
                             {{ $log->created_at->format('M d, Y') }}
                         </span>
                     </div>
                     
-                    {{-- パラメータ類 --}}
                     <div class="flex gap-4 mt-2 text-sm text-on-surface-variant">
                         <span>WPM: <strong class="text-on-surface">{{ $log->wpm }}</strong></span>
                         <span>Accuracy: <strong class="text-on-surface">{{ $log->accuracy }}%</strong></span>
                         <span>Time: <strong class="text-on-surface">{{ $log->clear_time }}s</strong></span>
                     </div>
                 </li>
-            @endforeach
+            @empty
+                {{-- データが0件の時に表示される部分 --}}
+                <li class="py-8 text-center text-on-surface-variant border border-dashed border-outline-variant rounded-xl">
+                    <span class="material-symbols-outlined text-4xl mb-2 opacity-50">history_off</span>
+                    <p>No learning records found yet.</p>
+                    <p class="text-sm opacity-70">Start your first practice to track your progress!</p>
+                </li>
+            @endforelse
         </ul>
 
     </div>

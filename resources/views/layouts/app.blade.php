@@ -19,6 +19,8 @@
     {{-- Tailwind CSS --}}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -184,23 +186,36 @@
                     @endguest
                 </div>
 
-                <div id="custom-drawer" class="fixed top-0 right-0 h-full w-[280px] border-l border-outline-variant/30 z-[9999] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl" style="background: #fff1ec !important; opacity: 1 !important; mix-blend-mode: normal !important;">
+                <div id="custom-drawer" class="fixed top-0 right-0 h-full w-[280px] border-l border-outline-variant/30 z-[9999] transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl" style="background: #fff1ec !important;">
                     <div class="flex items-center justify-between p-5 border-b border-outline-variant/20">
                         <h5 class="font-bold text-on-surface text-lg">Menu</h5>
                         <button id="menu-close-btn" class="p-1 text-on-surface hover:bg-surface-container rounded-lg transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
+                    
                     <div class="p-4 flex flex-col gap-2" style="background: #fff1ec !important;">
-                        <a href="{{ route('ranking.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
-                            <i class="fa-solid fa-trophy w-6 text-on-surface opacity-100"></i>Ranking
+                        
+                        {{-- Admin Controls: 管理者のみ表示 --}}
+                        @can('admin')
+                            <a href="{{ route('admin.users') }}" class="px-3 py-3 text-error hover:bg-error-container/20 rounded-xl no-underline font-semibold flex items-center transition-all">
+                                <i class="fa-solid fa-user-gear w-6"></i> Admin Dashboard
+                            </a>
+                            <hr class="border-outline-variant/30 my-2">
+                        @endcan
+
+                        {{-- 通常メニュー --}}
+                        <a href="{{ route('ranking.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
+                            <i class="fa-solid fa-trophy w-6"></i> Ranking
                         </a>
-                        <a href="{{ route('partners.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
-                            <i class="fa-solid fa-user-group w-6 text-on-surface opacity-100"></i>Language Partners
+                        <a href="{{ route('partners.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
+                            <i class="fa-solid fa-user-group w-6"></i> Language Partners
                         </a>
-                        <a href="{{ route('profile.show') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all" style="background-color: #fff1ec;">
-                            <i class="fa-solid fa-user w-6 text-on-surface opacity-100"></i>Profile
-                        </a>
+                        @auth
+                            <a href="{{ route('profile.show', Auth::user()->id) }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
+                                <i class="fa-solid fa-user w-6"></i> Profile
+                            </a>
+                        @endauth
                     </div>
                 </div>
                 
