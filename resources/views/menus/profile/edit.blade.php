@@ -20,10 +20,18 @@
                 
                 <h2 class="text-2xl font-bold text-on-surface mb-6">Update Profile</h2>
                 
+                {{-- アバター表示部分を以下のように修正 --}}
                 <div class="flex items-center gap-6 mb-6">
                     <div class="col-4">
                         @if ($user->avatar)
                             <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="w-20 h-20 rounded-full object-cover">
+                            {{-- 削除チェックボックス --}}
+                            <div class="mt-2 text-center">
+                                <label class="flex items-center justify-center gap-2 text-xs text-error cursor-pointer">
+                                    <input type="checkbox" name="remove_avatar" class="rounded border-outline-variant">
+                                    Delete photo
+                                </label>
+                            </div>
                         @else
                             <i class="fa-solid fa-circle-user text-6xl text-secondary"></i>
                         @endif

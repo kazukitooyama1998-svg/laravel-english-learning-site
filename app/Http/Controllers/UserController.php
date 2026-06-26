@@ -47,7 +47,12 @@ class UserController extends Controller
         $user->introduction = $request->introduction;
 
         // 3. アバター画像処理 (Base64)
-        if ($request->hasFile('avatar')) {
+        // 削除チェックボックスがオンならnullにする
+        if ($request->has('remove_avatar')) {
+            $user->avatar = null;
+        } 
+        // 新しい画像がアップロードされたらBase64に変換して保存
+        elseif ($request->hasFile('avatar')) {
             $user->avatar = 'data:image/' . $request->avatar->extension() . 
                             ';base64,' . base64_encode(file_get_contents($request->avatar));
         }
