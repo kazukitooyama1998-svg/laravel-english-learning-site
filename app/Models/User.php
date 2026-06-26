@@ -44,6 +44,18 @@ class User extends Authenticatable
         return $this->hasMany(StudyLog::class);
     }
 
+    public function getNextLevelXpAttribute()
+    {
+        // レベルアップに必要なXP（例: レベル100ごとに1レベルUP）
+        return $this->level * 500; 
+    }
+
+    public function getLevelAttribute()
+    {
+        // 累積XPから現在のレベルを動的に算出
+        return floor($this->total_xp / 500) + 1;
+    }
+
     /**
      * The attributes that are mass assignable.
      *

@@ -64,12 +64,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 | 3. Admin（管理者）専用ルート（ログイン必須 ＆ Adminミドルウェア必須）
 |--------------------------------------------------------------------------
 */
-// 💡書き方を統一し、すっきりさせました
-Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {     
+     
         // 管理者用ユーザー一覧・検索
         Route::get('/users', [UsersController::class, 'index'])->name('users');
         Route::get('/search', [UsersController::class, 'search'])->name('search');
