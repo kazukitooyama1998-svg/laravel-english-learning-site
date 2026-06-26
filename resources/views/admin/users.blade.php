@@ -6,10 +6,24 @@
 <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
     
     <div class="flex justify-end mb-6">
-        <form action="{{ route('admin.search') }}" method="GET" class="w-full md:w-[300px]">
-            <input type="search" name="search" 
-                   class="w-full px-4 py-2 border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" 
-                   placeholder="Search users...">
+        <form action="{{ route('admin.search') }}" method="GET" class="flex items-center gap-2 w-full md:w-[350px]">
+            {{-- 検索入力 --}}
+            <input type="search" name="keyword" 
+                value="{{ request('keyword') }}" 
+                class="w-full px-4 py-2 border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent" 
+                placeholder="Search users...">
+            
+            {{-- リセットボタン（検索ワードがある時だけ表示） --}}
+            @if(request()->filled('keyword'))
+                <a href="{{ route('admin.users') }}" 
+                class="px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-xl hover:bg-surface-container-highest transition-colors">
+                Clear
+                </a>
+            @else
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-xl hover:opacity-90 transition-colors">
+                    Search
+                </button>
+            @endif
         </form>
     </div>
 

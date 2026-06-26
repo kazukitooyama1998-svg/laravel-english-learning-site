@@ -23,17 +23,21 @@ class UsersController extends Controller
      */
     public function search(Request $request)
     {
+        // User::query() でベースを作成
         $query = User::query();
 
-        // 検索キーワードがあれば絞り込み
+        // name="keyword" と合わせたキーで取得
         if ($request->filled('keyword')) {
             $keyword = $request->keyword;
             $query->where('name', 'like', "%{$keyword}%")
-                  ->orWhere('email', 'like', "%{$keyword}%");
+                ->orWhere('email', 'like', "%{$keyword}%");
         }
 
-        $users = $query->paginate(20);
+        // paginate と withQueryString をセットで使うことで、
+        // 次ページに移動しても検索状態が維持されます
+        $all_users = $query->paginate(20)->withQueryString();
         
+        // 変数名 $all_users で渡す
         return view('admin.users', compact('all_users'));
     }
 
