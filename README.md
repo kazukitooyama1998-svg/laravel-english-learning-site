@@ -224,36 +224,4 @@ GET /contents/{id} → コンテンツ詳細
 余計な機能・広告なし
 入力中心のインターフェース
 
-########################進捗記録########################
-
-29/5/2026
-HTMLデザインをLaravelに移行しました。
-DBへログイン用にUser tableと、Typingのテキスト保存用にPractices tableのみ作成。
-Login、Register、ホーム画面、ダッシュボード、タイピング画面のみ作成しています。
-🔸今後に向けて🔸
->>それぞれのUserのタイピング記録をDBに記録する（今後のため）。
->>ダッシュボードの下部に進捗度を表示するようにします。
->>Navbarの右側にハンバーガーを設定して、UserのProfileの情報等を編集できる用にします。
->>Typingのコースを増やします。
->>Typingの文章の英語を解説する項目を設け、資料を表示します。
->>日本語表示と英語表示を選べる用にします。
->>Typingのスコアにランク付け
-
-22/6/2026
-26/6/2026までに成果物を作成する必要があるため開発定義を修正しました（作業進捗に合わせて適宜修正します）。
-usersテーブルにavatar,introduction,role_id(admin,user)追加しました。
-practicesテーブルにSoft Deletes追加しました。
-recordsテーブル追加（練習履歴 ＆ ランキング用）ユーザーとお題を紐づけ、タイピング結果を保存するテーブルです（Userから見て One to Many）。
-followsテーブル追加(フォロー機能 ＆ ランキング用)ユーザー同士を結びつける Many to Many（多対多） の中間テーブル（Pivot）
-create_chat_roomsとmessages_tablesの追加(相互フォローしているユーザー同士が1対1でメッセージをやり取りするためのテーブル)
-UserSeeder(admin,user)の追加
-Routeの作成・修正をしました
-User、Record、モデル
-
-23/6/2026
-ダッシュボードにハンバーガーメニューを追加しました(Ranking,Friends,Profile)
-タイピング教材を一旦WritingからSpeakingだけで実装するよう計画を変更します（教材を用意しやすいため）。
-PracticeSeederにスピーキング教材をアップロード(Education,Technology,Environment)。writing教材削除。
-practice/show.blade.php編集しました
-
 

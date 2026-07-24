@@ -16,6 +16,16 @@ class RecordController extends Controller
         $this->recordModel = $recordModel;
     }
 
+    public function index()
+    {
+        $records = Auth::user()->records()
+            ->with('practice.category')
+            ->latest()
+            ->get();
+
+        return view('history.index', compact('records'));
+    }
+
     public function store(Request $request, $id)
     {
         $practice = Practice::findOrFail($id);

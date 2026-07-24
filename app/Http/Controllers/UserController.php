@@ -15,11 +15,8 @@ class UserController extends Controller
     public function show()
     {
         $user = Auth::user();
-        
-        // ユーザーの練習履歴を新しい順に最大5件取得
-        $studyLogs = $user->records()->with('practice')->latest()->take(3)->get();
 
-        return view('menus.profile.index', compact('user', 'studyLogs'));
+        return view('menus.profile.index', compact('user'));
     }
 
     // プロフィール編集画面

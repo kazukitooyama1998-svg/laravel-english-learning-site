@@ -8,7 +8,7 @@
 
     <title>{{ config('app.name') }} | @yield('title')</title>
 
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite(['resources/css/app.css','resources/js/app.js','resources/js/english/app.js'])
 
     {{-- Google Fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
@@ -60,7 +60,7 @@
             "on-background": "#261813",
             "surface-variant": "#f8ddd4",
             "surface-container": "#ffe9e2",
-            "primary": "#a33900", 
+            "primary": "#a33900",
             "on-secondary-fixed-variant": "#53433c",
             "tertiary-fixed-dim": "#9ecaff",
             "on-tertiary-fixed": "#001d36",
@@ -142,7 +142,7 @@
                             <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="currentColor" />
                         </svg>
                     </div>
-                    <span class="text-xl font-bold tracking-tight text-[#261813]">FocusType</span>
+                    <span class="text-xl font-bold tracking-tight text-[#261813]">Axis English</span>
                 </a>
 
                 <div class="flex items-center gap-4 ml-auto">
@@ -205,14 +205,14 @@
                         @endcan
 
                         {{-- 通常メニュー --}}
-                        <a href="{{ route('ranking.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
-                            <i class="fa-solid fa-trophy w-6"></i> Ranking
+                        <a href="/english" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
+                            <i class="fa-solid fa-book-open w-6"></i> English Learning
                         </a>
                         <a href="{{ route('partners.index') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
                             <i class="fa-solid fa-user-group w-6"></i> Language Partners
                         </a>
                         @auth
-                            <a href="{{ route('profile.show', Auth::user()->id) }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
+                            <a href="{{ route('profile.show') }}" class="px-3 py-3 text-on-surface hover:text-primary hover:bg-surface-container rounded-xl no-underline font-semibold flex items-center transition-all">
                                 <i class="fa-solid fa-user w-6"></i> Profile
                             </a>
                         @endauth
@@ -230,7 +230,7 @@
         
         <footer class="py-10 border-t border-outline-variant/20 bg-surface-container-low">
             <div class="max-w-7xl mx-auto px-6 text-center text-on-surface-variant/60 text-sm">
-            © 2026 FocusType English Learning Systems
+            © 2026 Axis English
             </div>
         </footer>
     </div>

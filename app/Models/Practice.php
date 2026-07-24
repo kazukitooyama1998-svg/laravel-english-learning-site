@@ -20,12 +20,6 @@ class Practice extends Model
         'text'
     ];
 
-    // 💡 1対多：1つのお題は、たくさんのユーザーの練習履歴を持つ
-    public function records()
-    {
-        return $this->hasMany(Record::class);
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);

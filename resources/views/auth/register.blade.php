@@ -8,7 +8,7 @@
             <img
               class="w-full h-full object-cover"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAymBPEhE-V1VVSocu23laj4AMSzojWQ_sS8Sn7cV9_hGdccRltr4PbLdvkm2E6PyW9ktQXSyymJo4ifzWs1O6OsyhYYe2rSvW0fFnOb7_g8EiF4EnyAlR7bFwQSUFpjjd6kUH29Co4Asd5Sg5eH4g-tDUsfq0jKfQBWMzhrtfIU2HKsTvrav0VmgA65HJvN6yVuTldXqJv4Iu0Xs4K73gPvPnFtMPS3ysGqkh_9ytqBdN1zsbDvAvljcauMyf7dEEyDYv_Z7JkrfQ"
-              alt="learning"
+              alt="学習イメージ"
             />
             <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent"></div>
         </div>
@@ -19,10 +19,10 @@
 
             <div class="space-y-2">
               <h1 class="text-3xl font-bold tracking-tight text-on-surface">
-                Start Your Journey
+                はじめよう
               </h1>
               <p class="text-sm text-on-surface-variant">
-                Access all features for free. <span class="text-primary font-semibold">Free forever.</span>
+                全ての機能を無料でご利用いただけます。<span class="text-primary font-semibold">ずっと無料。</span>
               </p>
             </div>
 
@@ -32,7 +32,7 @@
                 <div class="space-y-4">
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-on-surface-variant" for="name">
-                            Full Name
+                            お名前
                         </label>
                         <input
                             id="name"
@@ -42,7 +42,7 @@
                             required
                             autocomplete="name"
                             autofocus
-                            placeholder="Enter your full name"
+                            placeholder="お名前を入力"
                             class="w-full px-4 py-3 bg-[#f8f6f6] border @error('name') border-error @else border-outline-variant @enderror rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                         />
                         @error('name')
@@ -52,7 +52,7 @@
 
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-on-surface-variant" for="email">
-                            Email Address
+                            メールアドレス
                         </label>
                         <input
                             id="email"
@@ -71,7 +71,7 @@
 
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-on-surface-variant" for="password">
-                            Password
+                            パスワード
                         </label>
                         <input
                             id="password"
@@ -79,7 +79,7 @@
                             name="password"
                             required
                             autocomplete="new-password"
-                            placeholder="Create a strong password"
+                            placeholder="安全なパスワードを設定"
                             class="w-full px-4 py-3 bg-[#f8f6f6] border @error('password') border-error @else border-outline-variant @enderror rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                         />
                         @error('password')
@@ -89,7 +89,7 @@
 
                     <div class="space-y-2">
                         <label class="block text-sm font-semibold text-on-surface-variant" for="password-confirm">
-                            Confirm Password
+                            パスワード（確認）
                         </label>
                         <input
                             id="password-confirm"
@@ -97,14 +97,14 @@
                             name="password_confirmation"
                             required
                             autocomplete="new-password"
-                            placeholder="Retype your password"
+                            placeholder="パスワードを再入力"
                             class="w-full px-4 py-3 bg-[#f8f6f6] border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                         />
                     </div>
                 </div>
 
                 <button type="submit" class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold hover:opacity-90 transition shadow-md">
-                    Create Account
+                    アカウントを作成
                 </button>
             </form>
 

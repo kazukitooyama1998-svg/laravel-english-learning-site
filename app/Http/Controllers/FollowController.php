@@ -26,10 +26,11 @@ class FollowController extends Controller
         $query->where('name', 'like', "%{$search}%");
     }
 
-    $followings = Auth::user()->followings()->paginate(10);
+    $followings = Auth::user()->followings()->paginate(10, ['*'], 'following_page');
+    $followers = Auth::user()->followers()->paginate(10, ['*'], 'follower_page');
     $suggestedUsers = $query->whereNotIn('id', Auth::user()->followings->pluck('id'))->get();
 
-    return view('menus.partners.index', compact('followings', 'suggestedUsers', 'search'));
+    return view('menus.partners.index', compact('followings', 'followers', 'suggestedUsers', 'search'));
     }
 
     public function startChat($targetId) {

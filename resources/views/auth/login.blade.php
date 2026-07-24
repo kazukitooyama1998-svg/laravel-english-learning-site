@@ -6,10 +6,10 @@
 
         <div class="space-y-2 text-center">
             <h1 class="text-3xl font-bold tracking-tight text-on-surface">
-                Welcome Back
+                おかえりなさい
             </h1>
             <p class="text-sm text-on-surface-variant">
-                Log in to continue your English typing journey.
+                ログインして、英語タイピング学習を続けましょう。
             </p>
         </div>
 
@@ -19,7 +19,7 @@
             <div class="space-y-4">
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-on-surface-variant" for="email">
-                        Email Address
+                        メールアドレス
                     </label>
                     <input
                         id="email"
@@ -39,7 +39,7 @@
 
                 <div class="space-y-2">
                     <label class="block text-sm font-semibold text-on-surface-variant" for="password">
-                        Password
+                        パスワード
                     </label>
                     <input
                         id="password"
@@ -47,7 +47,7 @@
                         name="password"
                         required
                         autocomplete="current-password"
-                        placeholder="Enter your password"
+                        placeholder="パスワードを入力"
                         class="w-full px-4 py-3 bg-[#f8f6f6] border @error('password') border-error @else border-outline-variant @enderror rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                     />
                     @error('password')
@@ -60,18 +60,18 @@
                 <label class="flex items-center gap-2 text-on-surface-variant cursor-pointer select-none">
                     <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}
                            class="rounded text-primary focus:ring-primary border-outline-variant size-4">
-                    <span>Remember Me</span>
+                    <span>ログイン状態を保持する</span>
                 </label>
 
                 @if (Route::has('password.request'))
                     <a class="text-sm font-semibold text-primary hover:opacity-80 no-underline" href="{{ route('password.request') }}">
-                        Forgot Password?
+                        パスワードをお忘れですか？
                     </a>
                 @endif
             </div>
 
             <button type="submit" class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold hover:opacity-90 transition shadow-md">
-                Log In
+                ログイン
             </button>
         </form>
 
