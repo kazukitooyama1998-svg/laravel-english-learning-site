@@ -6,7 +6,7 @@
 
         <div class="space-y-2 text-center">
             <h1 class="text-3xl font-bold tracking-tight text-on-surface">
-                おかえりなさい
+                Welcome Back!
             </h1>
             <p class="text-sm text-on-surface-variant">
                 ログインして、英語タイピング学習を続けましょう。

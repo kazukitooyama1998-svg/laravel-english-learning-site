@@ -19,10 +19,10 @@
 
             <div class="space-y-2">
               <h1 class="text-3xl font-bold tracking-tight text-on-surface">
-                はじめよう
+                利用登録
               </h1>
               <p class="text-sm text-on-surface-variant">
-                全ての機能を無料でご利用いただけます。<span class="text-primary font-semibold">ずっと無料。</span>
+                全ての機能を<span class="text-primary font-semibold">無料</span>でご利用いただけます。
               </p>
             </div>
 
