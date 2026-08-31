@@ -12,11 +12,332 @@ class ToeicSlideSeeder extends Seeder
 
     public function run(): void
     {
-        ToeicSlide::whereIn('part', [5, 6, 7])->delete();
+        ToeicSlide::whereIn('part', [1, 2, 3, 4, 5, 6, 7])->delete();
 
+        $this->createPart1Slides();
+        $this->createPart2Slides();
+        $this->createPart3Slides();
+        $this->createPart4Slides();
         $this->createPart5Slides();
         $this->createPart6Slides();
         $this->createPart7Slides();
+    }
+
+    private function createPart1Slides(): void
+    {
+        $slides = [
+            [
+                'step_number' => 1,
+                'slide_type'  => 'explanation',
+                'title'       => 'Part 1 とは？',
+                'content'     => '<p class="mb-4">Part 1は<strong>Photographs（写真描写問題）</strong>です。</p>
+<ul class="space-y-2">
+<li>問題数: <strong>6問</strong>（本番）</li>
+<li>形式: 1枚の写真について読み上げられる4つの英文（A〜D）を聞き、写真を最も正確に描写しているものを選ぶ</li>
+<li>選択肢は<strong>音声のみ</strong>で読み上げられ、印刷はされない</li>
+<li>目標解答時間: <strong>1問あたり約10秒</strong></li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>再生ボタンで英文を聞きながら、写真の「人物の動作」「物の位置」に注目しよう。迷ったら候補を2つに絞って消去法で選ぶ。</p>
+</div>',
+            ],
+        ];
+
+        foreach ($slides as $slide) {
+            ToeicSlide::create(array_merge($slide, ['part' => 1, 'sort_order' => $slide['step_number']]));
+        }
+    }
+
+    private function createPart2Slides(): void
+    {
+        $slides = [
+            [
+                'step_number' => 1,
+                'slide_type'  => 'explanation',
+                'title'       => 'Part 2 とは？',
+                'content'     => '<p class="mb-4">Part 2は<strong>Question-Response（応答問題）</strong>です。</p>
+<ul class="space-y-2">
+<li>問題数: <strong>25問</strong>（本番）</li>
+<li>形式: 1つの質問または発言と、それに対する3つの応答（A〜C）が読み上げられる。最もふさわしい応答を選ぶ</li>
+<li>質問文・応答とも<strong>音声のみ</strong>で、印刷はされない</li>
+<li>目標解答時間: <strong>1問あたり約5秒</strong></li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>最初の疑問詞（Who / What / When / Where / Why / How）を聞き逃さないことが最重要。疑問詞さえ聞き取れれば、話がそれた選択肢を消去できる。</p>
+</div>',
+            ],
+            [
+                'step_number' => 2,
+                'slide_type'  => 'strategy',
+                'title'       => '設問タイプ①：WH疑問文',
+                'content'     => '<p class="mb-4">Who / What / When / Where / Why / How で始まる疑問文は、Yes/Noでは答えられません。疑問詞に対応した情報（人・時・場所・理由・方法など）を答えている選択肢を選びます。</p>
+<ul class="space-y-2">
+<li><strong>Who</strong> → 人名・役職</li>
+<li><strong>When / What time</strong> → 時刻・日付</li>
+<li><strong>Where</strong> → 場所</li>
+<li><strong>Why</strong> → 理由（because など）</li>
+<li><strong>How long / How much / How often</strong> → 期間・金額・頻度</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 ひっかけに注意</p>
+<p>WH疑問文に "Yes" や "No" で始まる応答は、ほぼ確実に不正解。</p>
+</div>',
+            ],
+            [
+                'step_number' => 3,
+                'slide_type'  => 'strategy',
+                'title'       => '設問タイプ②：Yes/No疑問文・否定疑問文・付加疑問文',
+                'content'     => '<p class="mb-4">Do / Does / Did / Is / Are / Have で始まる疑問文には、Yes/Noまたはそれに相当する内容で応答します。</p>
+<ul class="space-y-2">
+<li><strong>否定疑問文</strong>（Isn\'t / Don\'t で始まる）も、内容が事実ならYes、事実でなければNoで答える（日本語の「はい/いいえ」の感覚と逆になる場合があるので注意）</li>
+<li><strong>付加疑問文</strong>（..., aren\'t you? / ..., isn\'t it? など）も同様にYes/Noベースで答える</li>
+<li>実際にはYes/Noを省略し、具体的な内容だけで答える応答も多い（本番でも頻出）</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>Yes/Noの有無だけで判断せず、後に続く内容が質問と論理的につながっているかを確認する。</p>
+</div>',
+            ],
+            [
+                'step_number' => 4,
+                'slide_type'  => 'strategy',
+                'title'       => '設問タイプ③：平叙文・依頼・提案・選択疑問文',
+                'content'     => '<p class="mb-4">TOEIC Part 2には疑問文ではなく、依頼・提案・報告（平叙文）の形式で出題されるパターンも多くあります。</p>
+<ul class="space-y-2">
+<li><strong>依頼表現</strong>（Could you...? / Would you mind...?）→ 引き受ける/断る応答</li>
+<li><strong>提案表現</strong>（Why don\'t we...? / Shall we...?）→ 賛成/代案の応答</li>
+<li><strong>選択疑問文</strong>（A or B?）→ どちらかを選ぶ、または両方とも否定する応答</li>
+<li><strong>平叙文</strong>（問題の報告・状況説明）→ 対応策や反応を示す応答</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>平叙文は「質問」ではないため、内容を最後まで聞き、状況に対する自然な反応・対応を選ぶ意識が必要。</p>
+</div>',
+            ],
+            [
+                'step_number' => 5,
+                'slide_type'  => 'strategy',
+                'title'       => 'ひっかけパターンとPart 2解答戦略',
+                'content'     => '<div class="space-y-3">
+<div class="bg-surface-container p-4 rounded-xl">
+<p class="font-semibold mb-2">頻出のひっかけパターン</p>
+<ul class="space-y-1">
+<li><strong>音の類似</strong>：質問中の単語と似た発音の単語を含む選択肢（例：market ↔ marketing）</li>
+<li><strong>連想語</strong>：質問と関連しそうだが、実際には答えになっていない単語を含む選択肢</li>
+<li><strong>時制のズレ</strong>：質問は未来のことなのに過去形で答えるなど、時制が噛み合わない選択肢</li>
+</ul>
+</div>
+</div>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 時間配分の目安</p>
+<p>Part2全25問は<strong>約4分</strong>で解き切るのが理想。1問に迷っても選択肢は一度しか読まれないため、直感で選んですぐ次の問題に集中を切り替えることが高得点の鍵。</p>
+</div>',
+            ],
+        ];
+
+        foreach ($slides as $slide) {
+            ToeicSlide::create(array_merge($slide, ['part' => 2, 'sort_order' => $slide['step_number']]));
+        }
+    }
+
+    private function createPart3Slides(): void
+    {
+        $slides = [
+            [
+                'step_number' => 1,
+                'slide_type'  => 'explanation',
+                'title'       => 'Part 3 とは？',
+                'content'     => '<p class="mb-4">Part 3は<strong>Conversations（会話問題）</strong>です。</p>
+<ul class="space-y-2">
+<li>問題数: <strong>39問</strong>（本番・13会話 × 3問）</li>
+<li>形式: 2〜3人の会話を聞き、その内容について3つの設問（各4択）に答える</li>
+<li>会話自体は<strong>音声のみ</strong>で、印刷はされない。ただし設問文と選択肢は問題冊子に<strong>印刷されている</strong>（Part1・2との大きな違い）</li>
+<li>目標解答時間: <strong>1会話（3問）あたり約45秒</strong></li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>音声が流れる前に3つの設問と選択肢に目を通しておく（先読み）ことで、聞き取るべきポイントを絞り込める。</p>
+</div>',
+            ],
+            [
+                'step_number' => 2,
+                'slide_type'  => 'strategy',
+                'title'       => '設問の「先読み」テクニック',
+                'content'     => '<p class="mb-4">Part3で最も重要なテクニックが<strong>先読み（プレビュー）</strong>です。会話の音声が流れる前に、3つの設問文だけを素早く読んでおきます。</p>
+<div class="bg-surface-container p-4 rounded-xl mb-4">
+<p class="font-semibold mb-2">先読みで確認すること</p>
+<ul class="space-y-1">
+<li>疑問詞（What / Where / When / Why / How）— 何を聞き取るべきか</li>
+<li>主語（man / woman / speakers）— 誰の発言に注目するか</li>
+<li>設問の順序 — 会話の流れに沿って出題されることが多い（設問1は前半、設問3は後半のヒントが多い）</li>
+</ul>
+</div>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>選択肢の文章まで全部読む時間はないので、設問文（What / Where など）だけを先に確認するだけでも効果は大きい。</p>
+</div>',
+            ],
+            [
+                'step_number' => 3,
+                'slide_type'  => 'strategy',
+                'title'       => '頻出設問タイプ①：話題・目的・場所',
+                'content'     => '<p class="mb-4">会話全体に関わる設問は、多くの場合<strong>会話の冒頭</strong>にヒントがあります。</p>
+<ul class="space-y-2">
+<li><strong>What are the speakers discussing?</strong>（何について話しているか）</li>
+<li><strong>Where does the conversation most likely take place?</strong>（会話の場所）</li>
+<li><strong>Why is the man/woman calling?</strong>（電話の目的）</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>最初の1〜2文に集中する。話題や場所を示す単語（office / restaurant / flight など）が直接的なヒントになることが多い。</p>
+</div>',
+            ],
+            [
+                'step_number' => 4,
+                'slide_type'  => 'strategy',
+                'title'       => '頻出設問タイプ②：詳細・次の行動・依頼',
+                'content'     => '<p class="mb-4">会話の中盤〜後半に関する設問は、<strong>具体的な発言</strong>を正確に聞き取る必要があります。</p>
+<ul class="space-y-2">
+<li><strong>What does the woman ask the man to do?</strong>（依頼内容）</li>
+<li><strong>What will the man most likely do next?</strong>（次の行動）</li>
+<li><strong>What problem does the speaker mention?</strong>（問題点）</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>選択肢は会話中の単語をそのまま使わず、<strong>言い換え（パラフレーズ）</strong>されていることが多い。例：「remote into your machine」→「access his computer remotely」。</p>
+</div>',
+            ],
+            [
+                'step_number' => 5,
+                'slide_type'  => 'strategy',
+                'title'       => 'Part 3 解答戦略',
+                'content'     => '<div class="space-y-3">
+<div class="flex items-start gap-3">
+<span class="text-xl font-bold text-primary">1</span>
+<div><p class="font-semibold">音声が流れる前に3問を先読み</p><p class="text-on-surface-variant">疑問詞と主語だけでも確認しておく</p></div>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-xl font-bold text-primary">2</span>
+<div><p class="font-semibold">設問の順序 ≒ 会話の流れ</p><p class="text-on-surface-variant">設問1は前半、設問3は後半にヒントがあることが多い</p></div>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-xl font-bold text-primary">3</span>
+<div><p class="font-semibold">分からなくても止まらない</p><p class="text-on-surface-variant">1問聞き逃しても、次の設問のヒントに集中を切り替える</p></div>
+</div>
+</div>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 時間配分の目安</p>
+<p>Part3全13会話（39問）は<strong>約18分</strong>で進行する。1会話あたり約80秒（音声約30秒＋解答約50秒）が目安。</p>
+</div>',
+            ],
+        ];
+
+        foreach ($slides as $slide) {
+            ToeicSlide::create(array_merge($slide, ['part' => 3, 'sort_order' => $slide['step_number']]));
+        }
+    }
+
+    private function createPart4Slides(): void
+    {
+        $slides = [
+            [
+                'step_number' => 1,
+                'slide_type'  => 'explanation',
+                'title'       => 'Part 4 とは？',
+                'content'     => '<p class="mb-4">Part 4は<strong>Talks（説明文問題）</strong>です。</p>
+<ul class="space-y-2">
+<li>問題数: <strong>30問</strong>（本番・10トーク × 3問）</li>
+<li>形式: 1人の話者による短いトーク（留守番電話・アナウンス・広告など）を聞き、その内容について3つの設問（各4択）に答える</li>
+<li>トーク自体は<strong>音声のみ</strong>で、印刷はされない。ただし設問文と選択肢は問題冊子に<strong>印刷されている</strong>（Part3と同じ形式）</li>
+<li>目標解答時間: <strong>1トーク（3問）あたり約45秒</strong></li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 Part3との違い</p>
+<p>Part3は2人以上の<strong>会話</strong>、Part4は1人の話者による<strong>まとまった説明</strong>（アナウンス・留守電・広告など）。話者交代がない分、話の流れ自体は追いやすいが、情報量が多く早口になりやすい。</p>
+</div>',
+            ],
+            [
+                'step_number' => 2,
+                'slide_type'  => 'strategy',
+                'title'       => '頻出トークのジャンル',
+                'content'     => '<p class="mb-4">Part4で頻出するトークのジャンルを知っておくと、話の展開を予測しやすくなります。</p>
+<ul class="space-y-2">
+<li><strong>留守番電話メッセージ（Telephone message）</strong>— 用件・依頼・折り返し先が中心</li>
+<li><strong>お知らせ・館内アナウンス（Announcement）</strong>— 場所・時間・注意事項が中心</li>
+<li><strong>広告（Advertisement）</strong>— 商品/サービスの特徴・キャンペーン内容</li>
+<li><strong>ニュース・天気予報（Broadcast）</strong>— 今日／明日の情報、対応策の提案</li>
+<li><strong>会議冒頭の説明・紹介（Excerpt from a meeting）</strong>— 議題・登壇者紹介・進行予定</li>
+<li><strong>自動音声案内（Recorded message）</strong>— 番号選択の案内、営業時間</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>ジャンルが分かれば「次に何を言いそうか」を予測しながら聞けるようになる。冒頭の一文でジャンルを見極める練習をしよう。</p>
+</div>',
+            ],
+            [
+                'step_number' => 3,
+                'slide_type'  => 'strategy',
+                'title'       => '設問の「先読み」はPart3と同様に重要',
+                'content'     => '<p class="mb-4">Part4もPart3と同じく、音声が流れる前に3つの設問文を先読みしておくことが最重要テクニックです。</p>
+<ul class="space-y-2">
+<li><strong>What is the purpose of the talk?</strong>（トークの目的）— 冒頭にヒントがあることが多い</li>
+<li><strong>What does the speaker mention about...?</strong>（詳細）— 該当箇所を聞き逃さないよう集中する</li>
+<li><strong>What will the listener probably do next?</strong>（今後の行動）— トークの終盤にヒントが多い</li>
+</ul>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>設問の順序はトークの流れ（冒頭→中盤→終盤）にほぼ対応している。設問3は「今後の行動」や「次のステップ」を問う問題が多い。</p>
+</div>',
+            ],
+            [
+                'step_number' => 4,
+                'slide_type'  => 'strategy',
+                'title'       => '数字・固有名詞の聞き取り',
+                'content'     => '<p class="mb-4">Part4では時刻・金額・割引率・電話で押す番号など、<strong>具体的な数字</strong>を問う設問が頻出します。</p>
+<div class="bg-surface-container p-4 rounded-xl mb-4">
+<p class="font-semibold mb-2">数字が絡む頻出パターン</p>
+<ul class="space-y-1">
+<li>営業時間・締め切り時刻（"before five P.M." など）</li>
+<li>割引率・価格（"up to fifty percent" など）</li>
+<li>自動音声案内での選択番号（"press one / press two" など）</li>
+<li>所要期間（"approximately three weeks" など）</li>
+</ul>
+</div>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 攻略ポイント</p>
+<p>数字はメモを取る余裕がなくても、設問の選択肢が数字の場合は特に集中して聞く。似た数字（fifteen / fifty など）の聞き間違いに注意。</p>
+</div>',
+            ],
+            [
+                'step_number' => 5,
+                'slide_type'  => 'strategy',
+                'title'       => 'Part 4 解答戦略',
+                'content'     => '<div class="space-y-3">
+<div class="flex items-start gap-3">
+<span class="text-xl font-bold text-primary">1</span>
+<div><p class="font-semibold">音声が流れる前に3問を先読み</p><p class="text-on-surface-variant">疑問詞と話題のジャンルを予測しておく</p></div>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-xl font-bold text-primary">2</span>
+<div><p class="font-semibold">冒頭の1文でジャンルと目的をつかむ</p><p class="text-on-surface-variant">「誰が」「何のために」話しているかを最初に押さえる</p></div>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-xl font-bold text-primary">3</span>
+<div><p class="font-semibold">終盤は「次の行動」に注目</p><p class="text-on-surface-variant">依頼・案内・お願いの表現はトークの最後に来ることが多い</p></div>
+</div>
+</div>
+<div class="mt-4 p-4 bg-primary/10 rounded-xl">
+<p class="font-semibold text-primary">💡 時間配分の目安</p>
+<p>Part4全10トーク（30問）は<strong>約16分</strong>で進行する。1トークあたり約90秒（音声約30秒＋解答約60秒）が目安。</p>
+</div>',
+            ],
+        ];
+
+        foreach ($slides as $slide) {
+            ToeicSlide::create(array_merge($slide, ['part' => 4, 'sort_order' => $slide['step_number']]));
+        }
     }
 
     private function createPart5Slides(): void

@@ -15,6 +15,7 @@ class ToeicQuestion extends Model
         'part',
         'passage_id',
         'question_text',
+        'image_url',
         'explanation',
         'difficulty',
         'xp',

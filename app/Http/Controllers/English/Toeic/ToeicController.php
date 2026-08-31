@@ -105,6 +105,13 @@ class ToeicController extends Controller
             ['last_step' => $step]
         );
 
+        // 学習時間の計測開始（スライド初回閲覧時刻）。complete() で回収してtotal_study_timeに加算する。
+        // 既に開始済みならそのまま（スライドを行き来しても計測をリセットしない）。
+        $timerKey = "toeic_started_at_{$part}";
+        if (!session()->has($timerKey)) {
+            session([$timerKey => now()]);
+        }
+
         return view('english.toeic.slides', compact('part', 'step', 'totalSteps', 'canSkip', 'slide'));
     }
 
@@ -128,9 +135,10 @@ class ToeicController extends Controller
      * TOEIC 問題（全問ロード方式）(S04)
      * GET /english/toeic/{part}/practice
      *
+     * Part 1・2 は問題プールからランダムに5問を抽出して出題する（プールが増えても出題数は5問固定）。
      * Part 5 は問題プールから10問を抽出して出題する（セッション中は順序固定）。
      * 未回答の問題があればそれを優先的に抽出し、全問回答済みの場合は完全ランダムに抽出する。
-     * Part 6 / 7 は長文（passage）2つ分を1セッションで出題する。
+     * Part 3・4 は会話/トーク（passage）2つ分（3問×2＝6問）、Part 6 / 7 は長文（passage）2つ分を1セッションで出題する。
      * 未回答の問題を含むパッセージを優先し、全問回答済みの場合は完全ランダムに2パッセージ選ぶ。
      */
     public function practice(int $part)
@@ -157,7 +165,10 @@ class ToeicController extends Controller
 
             $user = Auth::user();
 
-            if ($part === 5) {
+            if (in_array($part, [1, 2], true)) {
+                // Part1・Part2は問題プールからランダムに5問を抽出して出題する（プールが増えても出題数は5問固定）
+                $questions = $pool->shuffle()->take(5)->values();
+            } elseif ($part === 5) {
                 // 未回答の問題を優先して出題し、全問回答済みなら完全ランダムに戻す
                 $answeredIds = $this->toeicAnsweredQuestionIds($user, $part);
                 $unanswered  = $pool->whereNotIn('id', $answeredIds)->values();
@@ -171,7 +182,7 @@ class ToeicController extends Controller
                     $fillers = $pool->whereNotIn('id', $questions->pluck('id'))->shuffle()->take($needed);
                     $questions = $questions->concat($fillers)->values();
                 }
-            } elseif (in_array($part, [6, 7], true)) {
+            } elseif (in_array($part, [3, 4, 6, 7], true)) {
                 // 未回答の問題を含むパッセージを優先し、パッセージ2つ分を出題する
                 $answeredIds          = $this->toeicAnsweredQuestionIds($user, $part);
                 $allPassageIds        = $pool->pluck('passage_id')->unique()->values();
@@ -199,6 +210,7 @@ class ToeicController extends Controller
             return [
                 'id'            => $q->id,
                 'question_text' => $q->question_text,
+                'image_url'     => $q->image_url,
                 'explanation'   => $q->explanation ?? '',
                 'passage'       => $q->passage ? [
                     'id'        => $q->passage->id,
@@ -268,7 +280,14 @@ class ToeicController extends Controller
         $totalQuestions  = count($answers);
         $xp              = $this->xpService->calcToeicXp($correctCount, $totalQuestions);
 
-        DB::transaction(function () use ($user, $part, $answers, $correctCount, $totalQuestions, $xp) {
+        // 学習時間 = スライド初回閲覧〜回答完了までの経過時間（開始記録が無ければ0秒扱い）
+        $timerKey  = "toeic_started_at_{$part}";
+        $startedAt = session($timerKey);
+        // Carbon 3 の diffInSeconds() はデフォルトで符号付き（$absolute=false）を返すため、
+        // 明示的に絶対値を指定する（付けないと経過時間が負の数になりDB挿入エラーになる）。
+        $studySeconds = $startedAt ? max(0, (int) now()->diffInSeconds($startedAt, true)) : 0;
+
+        DB::transaction(function () use ($user, $part, $answers, $correctCount, $totalQuestions, $xp, $studySeconds) {
             // ToeicResult 保存
             $result = $user->toeicResults()->create([
                 'part'            => $part,
@@ -296,7 +315,7 @@ class ToeicController extends Controller
             $this->xpService->addXp($user, $xp);
 
             // StudyLog 記録（total_study_time + streak も内部で更新）
-            $this->studyLogService->log($user, 'toeic', $result->id, $xp, 0);
+            $this->studyLogService->log($user, 'toeic', $result->id, $xp, $studySeconds);
 
             // セクション進捗を更新（DBに登録された全問題に一度でも解答したら完了とする）
             $isFullyCovered = $this->toeicQuestionsCoveragePercent($user, $part) >= 100;
@@ -311,6 +330,7 @@ class ToeicController extends Controller
                 'toeic_result_id'           => $result->id,
                 "toeic_answers_{$part}"     => null,
                 "toeic_practice_{$part}"    => null,
+                "toeic_started_at_{$part}"  => null,
             ]);
         });
 

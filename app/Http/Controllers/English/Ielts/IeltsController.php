@@ -88,6 +88,13 @@ class IeltsController extends Controller
             ['last_step' => $step]
         );
 
+        // 学習時間の計測開始（スライド初回閲覧時刻）。storeResult() で回収してtotal_study_timeに加算する。
+        // 既に開始済みならそのまま（スライドを行き来しても計測をリセットしない）。
+        $timerKey = "ielts_started_at_{$sectionKey}";
+        if (!session()->has($timerKey)) {
+            session([$timerKey => now()]);
+        }
+
         $topicMeta = config('english.ielts_topic_meta')[$topic] ?? [];
         $scoreMeta = config('english.ielts_score_meta')[$score] ?? [];
         $partMeta  = config('english.ielts_part_meta')[$part] ?? [];
@@ -171,10 +178,21 @@ class IeltsController extends Controller
         ]);
 
         $this->xpService->addXp($user, $xp);
-        $this->studyLogService->log($user, 'ielts', $record->id, $xp, $timeSec);
+
+        // 学習時間 = スライド初回閲覧〜タイピング回答完了までの経過時間。
+        // clear_time/wpm算出用の$timeSec（タイピングのみの時間）とは別に、total_study_time用の値を計算する。
+        // 開始記録が無い場合（スライドを経由せず直接アクセスした等）はタイピング時間のみで代用する。
+        $sectionKey   = "{$part}_{$topic}_{$score}";
+        $timerKey     = "ielts_started_at_{$sectionKey}";
+        $startedAt    = session($timerKey);
+        // Carbon 3 の diffInSeconds() はデフォルトで符号付き（$absolute=false）を返すため、
+        // 明示的に絶対値を指定する（付けないと経過時間が負の数になりDB挿入エラーになる）。
+        $studySeconds = $startedAt ? max(0, (int) now()->diffInSeconds($startedAt, true)) : $timeSec;
+        session()->forget($timerKey);
+
+        $this->studyLogService->log($user, 'ielts', $record->id, $xp, $studySeconds);
 
         // タイピング進捗を完了に更新
-        $sectionKey = "{$part}_{$topic}_{$score}";
         $user->sectionProgress()->updateOrCreate(
             ['section_type' => UserSectionProgress::TYPE_IELTS_TYPING, 'section_key' => $sectionKey],
             ['is_completed' => true, 'completed_at' => now()]

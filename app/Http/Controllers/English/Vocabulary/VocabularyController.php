@@ -353,10 +353,12 @@ class VocabularyController extends Controller
             'is_completed'       => ['required', 'boolean'],
             'learned_word_ids'   => ['nullable', 'array'],
             'learned_word_ids.*' => ['integer', 'exists:vocabulary_words,id'],
+            'duration_seconds'   => ['nullable', 'integer', 'min:0'],
         ]);
 
         $level       = $request->string('level');
         $isCompleted = $request->boolean('is_completed');
+        $timeSec     = $request->integer('duration_seconds', 0);
         $user        = Auth::user();
 
         $user->sectionProgress()->updateOrCreate(
@@ -376,7 +378,7 @@ class VocabularyController extends Controller
         if ($isCompleted) {
             $xp = config('english.xp.flashcard_set_complete', 30);
             $this->xpService->addXp($user, $xp);
-            $this->studyLogService->log($user, 'vocabulary', null, $xp, 0);
+            $this->studyLogService->log($user, 'vocabulary', null, $xp, $timeSec);
         }
 
         return response()->json(['success' => true]);
