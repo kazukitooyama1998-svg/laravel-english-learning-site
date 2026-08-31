@@ -52,8 +52,8 @@ $levelLabel = strtoupper(explode('-', $level)[0]) . ' ' . explode('-', $level)[1
                         class="p-4 rounded-[0.75rem] border-2 text-left font-label-md transition-all"
                     >
                         <span x-text="option"></span>
-                        <span x-show="isAnswered && option === current.correct" class="ml-2">✅</span>
-                        <span x-show="isAnswered && selectedOption === idx && option !== current.correct" class="ml-2">❌</span>
+                        <span x-show="isAnswered && option === current.correct" class="ml-2"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                        <span x-show="isAnswered && selectedOption === idx && option !== current.correct" class="ml-2"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                     </button>
                 </template>
             </div>
@@ -82,7 +82,7 @@ $levelLabel = strtoupper(explode('-', $level)[0]) . ' ' . explode('-', $level)[1
         {{-- 完了 --}}
         <div x-show="isComplete" class="text-center max-w-md mx-auto">
             <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-8 mb-6">
-                <div class="text-5xl mb-4">🎉</div>
+                <div class="mb-4 text-tertiary"><svg class="w-14 h-14 mx-auto" aria-hidden="true"><use href="#m-medal"/></svg></div>
                 <h2 class="text-headline-lg font-bold text-on-surface mb-2">クイズ完了！</h2>
                 <p class="text-body-md text-on-surface-variant mb-2">スコア</p>
                 <p class="text-display font-black text-primary" x-text="`${score} / ${questions.length}`"></p>

@@ -83,8 +83,8 @@
                                     >
                                         <span class="font-bold uppercase mr-2" x-text="option.label + '.'"></span>
                                         <span x-text="option.option_text"></span>
-                                        <span x-show="groupSubmitted && groupResults[q.id] && option.id === groupResults[q.id].correct_option_id" class="ml-2">✅</span>
-                                        <span x-show="groupSubmitted && groupAnswers[q.id] === option.id && groupResults[q.id] && option.id !== groupResults[q.id].correct_option_id" class="ml-2">❌</span>
+                                        <span x-show="groupSubmitted && groupResults[q.id] && option.id === groupResults[q.id].correct_option_id" class="ml-2"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                                        <span x-show="groupSubmitted && groupAnswers[q.id] === option.id && groupResults[q.id] && option.id !== groupResults[q.id].correct_option_id" class="ml-2"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                                     </button>
                                 </template>
                             </div>
@@ -92,7 +92,7 @@
                                 <div class="mt-4 p-4 rounded-[0.5rem] border"
                                      :class="groupResults[q.id].is_correct ? 'bg-green-50 border-green-200' : 'bg-error-container/30 border-error/20'">
                                     <p class="font-bold mb-1" :class="groupResults[q.id].is_correct ? 'text-green-700' : 'text-error'">
-                                        <span x-text="groupResults[q.id].is_correct ? '✅ 正解！' : '❌ 不正解'"></span>
+                                        <span class="material-symbols-outlined text-[1.1em] align-[-3px] mr-1" x-text="groupResults[q.id].is_correct ? 'check_circle' : 'cancel'"></span><span x-text="groupResults[q.id].is_correct ? '正解！' : '不正解'"></span>
                                     </p>
                                     <p class="text-body-md text-on-surface" x-text="groupResults[q.id].explanation"></p>
                                 </div>
@@ -127,8 +127,8 @@
 
                 <div class="mt-6 flex justify-end max-w-3xl mx-auto">
                     <a href="{{ route('english.toeic.index') }}"
-                       class="px-6 py-2.5 bg-orange-600 text-white font-bold rounded-[0.5rem] shadow-sm hover:bg-orange-700 transition-colors text-base no-underline">
-                        Quit Practice
+                       class="px-5 py-2.5 bg-surface-container-high text-on-surface-variant font-bold rounded-full border border-outline-variant hover:bg-surface-container-highest transition-colors text-label-md no-underline">
+                        練習を中断する
                     </a>
                 </div>
             </div>
@@ -136,7 +136,7 @@
             {{-- 全問完了（complete() が form submit するため、ここは loading 表示のみ） --}}
             <div x-show="isComplete" class="text-center max-w-md mx-auto">
                 <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-8 mb-6">
-                    <div class="text-5xl mb-4">🎉</div>
+                    <div class="mb-4 text-tertiary"><svg class="w-14 h-14 mx-auto" aria-hidden="true"><use href="#m-medal"/></svg></div>
                     <h2 class="text-headline-lg font-bold text-on-surface mb-2">完了！</h2>
                     <p class="text-body-md text-on-surface-variant mb-4">スコア</p>
                     <p class="text-display font-black text-primary" x-text="`${score} / ${questions.length}`"></p>
@@ -231,8 +231,8 @@
                             >
                                 <span class="font-bold uppercase mr-2" x-text="option.label + '.'"></span>
                                 <span x-text="option.option_text"></span>
-                                <span x-show="isAnswered && option.id === correctOptionId" class="ml-2">✅</span>
-                                <span x-show="isAnswered && selectedId === option.id && option.id !== correctOptionId" class="ml-2">❌</span>
+                                <span x-show="isAnswered && option.id === correctOptionId" class="ml-2"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                                <span x-show="isAnswered && selectedId === option.id && option.id !== correctOptionId" class="ml-2"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                             </button>
                         </template>
                     </div>
@@ -250,8 +250,8 @@
                                 class="p-6 rounded-[0.75rem] border-2 text-center font-label-md transition-all"
                             >
                                 <span class="block text-headline-md font-bold uppercase" x-text="option.label"></span>
-                                <span x-show="isAnswered && option.id === correctOptionId" class="block mt-1">✅</span>
-                                <span x-show="isAnswered && selectedId === option.id && option.id !== correctOptionId" class="block mt-1">❌</span>
+                                <span x-show="isAnswered && option.id === correctOptionId" class="block mt-1"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                                <span x-show="isAnswered && selectedId === option.id && option.id !== correctOptionId" class="block mt-1"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                             </button>
                         </template>
                     </div>
@@ -268,8 +268,8 @@
                             class="p-6 rounded-[0.75rem] border-2 text-center font-label-md transition-all"
                         >
                             <span class="block text-headline-md font-bold uppercase" x-text="option.label"></span>
-                            <span x-show="isAnswered && option.id === correctOptionId" class="block mt-1">✅</span>
-                            <span x-show="isAnswered && selectedId === option.id && option.id !== correctOptionId" class="block mt-1">❌</span>
+                            <span x-show="isAnswered && option.id === correctOptionId" class="block mt-1"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                            <span x-show="isAnswered && selectedId === option.id && option.id !== correctOptionId" class="block mt-1"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                         </button>
                     </template>
                 </div>
@@ -293,7 +293,7 @@
                         <div :class="isCorrect ? 'bg-green-50 border-green-200' : 'bg-error-container/30 border-error/20'"
                              class="border rounded-[0.5rem] p-4">
                             <p class="font-bold mb-1" :class="isCorrect ? 'text-green-700' : 'text-error'">
-                                <span x-text="isCorrect ? '✅ 正解！' : '❌ 不正解'"></span>
+                                <span class="material-symbols-outlined text-[1.1em] align-[-3px] mr-1" x-text="isCorrect ? 'check_circle' : 'cancel'"></span><span x-text="isCorrect ? '正解！' : '不正解'"></span>
                             </p>
                             <p class="text-body-md text-on-surface" x-text="explanation"></p>
 
@@ -304,8 +304,8 @@
                                         <p class="text-body-md" :class="option.id === correctOptionId ? 'text-green-700 font-semibold' : 'text-on-surface'">
                                             <span class="font-bold uppercase mr-1" x-text="option.label + '.'"></span>
                                             <span x-text="option.option_text"></span>
-                                            <span x-show="option.id === correctOptionId">✅</span>
-                                            <span x-show="selectedId === option.id && option.id !== correctOptionId">❌</span>
+                                            <span x-show="option.id === correctOptionId"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                                            <span x-show="selectedId === option.id && option.id !== correctOptionId"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                                         </p>
                                     </template>
                                 </div>
@@ -319,8 +319,8 @@
                                     <p class="text-body-md" :class="option.id === correctOptionId ? 'text-green-700 font-semibold' : 'text-on-surface'">
                                         <span class="font-bold uppercase mr-1" x-text="option.label + '.'"></span>
                                         <span x-text="option.option_text"></span>
-                                        <span x-show="option.id === correctOptionId">✅</span>
-                                        <span x-show="selectedId === option.id && option.id !== correctOptionId">❌</span>
+                                        <span x-show="option.id === correctOptionId"><svg class="inline w-4 h-4 align-[-3px] text-tertiary" aria-hidden="true"><use href="#m-check"/></svg></span>
+                                        <span x-show="selectedId === option.id && option.id !== correctOptionId"><svg class="inline w-4 h-4 align-[-3px] text-error" aria-hidden="true"><use href="#m-cross"/></svg></span>
                                     </p>
                                 </template>
                             </div>
@@ -337,8 +337,8 @@
 
                 <div class="mt-6 flex justify-end max-w-3xl mx-auto">
                     <a href="{{ route('english.toeic.index') }}"
-                       class="px-6 py-2.5 bg-orange-600 text-white font-bold rounded-[0.5rem] shadow-sm hover:bg-orange-700 transition-colors text-base no-underline">
-                        Quit Practice
+                       class="px-5 py-2.5 bg-surface-container-high text-on-surface-variant font-bold rounded-full border border-outline-variant hover:bg-surface-container-highest transition-colors text-label-md no-underline">
+                        練習を中断する
                     </a>
                 </div>
             </div>
@@ -346,7 +346,7 @@
             {{-- 全問完了（complete() が form submit するため、ここは loading 表示のみ） --}}
             <div x-show="isComplete" class="text-center max-w-md mx-auto">
                 <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-8 mb-6">
-                    <div class="text-5xl mb-4">🎉</div>
+                    <div class="mb-4 text-tertiary"><svg class="w-14 h-14 mx-auto" aria-hidden="true"><use href="#m-medal"/></svg></div>
                     <h2 class="text-headline-lg font-bold text-on-surface mb-2">完了！</h2>
                     <p class="text-body-md text-on-surface-variant mb-4">スコア</p>
                     <p class="text-display font-black text-primary" x-text="`${score} / ${questions.length}`"></p>

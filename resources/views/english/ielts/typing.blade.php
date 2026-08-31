@@ -51,8 +51,8 @@ window.__TYPING_CONFIG__ = {
 
     <div class="mt-6 flex justify-end">
       <a href="{{ route('english.ielts.index') }}"
-         class="px-6 py-2.5 bg-orange-600 text-white font-bold rounded-[0.5rem] shadow-sm hover:bg-orange-700 transition-colors text-base">
-        Quit Practice
+         class="px-5 py-2.5 bg-surface-container-high text-on-surface-variant font-bold rounded-full border border-outline-variant hover:bg-surface-container-highest transition-colors text-label-md">
+        練習を中断する
       </a>
     </div>
   </div>
@@ -61,7 +61,7 @@ window.__TYPING_CONFIG__ = {
 {{-- リザルトモーダル --}}
 <div id="result-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
   <div class="bg-surface w-full max-w-md rounded-[0.5rem] p-6 shadow-xl text-center">
-    <h2 class="text-headline-md text-on-surface mb-4 font-bold">Practice Completed! 🎉</h2>
+    <h2 class="text-headline-md text-on-surface mb-4 font-bold">Practice Completed!</h2>
     <div class="text-left space-y-4 text-on-surface-variant">
 
       {{-- Stats --}}

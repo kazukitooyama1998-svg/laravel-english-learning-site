@@ -5,13 +5,16 @@
 @endphp
 
 <div class="w-full">
-    <div class="flex items-center justify-between mb-1">
-        <span class="text-label-md font-bold text-primary">Level {{ $level }}</span>
-        <span class="text-caption text-on-surface-variant">{{ number_format($currentXp) }} / {{ number_format($nextXp) }} XP</span>
+    <div class="flex items-center justify-between mb-1.5">
+        <span class="inline-flex items-center gap-1.5 text-label-md font-bold text-primary">
+            <span class="material-symbols-outlined text-base">military_tech</span>
+            Level {{ $level }}
+        </span>
+        <span class="text-caption text-on-surface-variant font-semibold">{{ number_format($currentXp) }} / {{ number_format($nextXp) }} XP</span>
     </div>
-    <div class="w-full bg-surface-container-high rounded-[0.75rem] h-3 overflow-hidden">
-        <div class="bg-primary h-full rounded-[0.75rem] transition-all duration-700"
+    <div class="w-full bg-surface-container-high rounded-full h-3.5 overflow-hidden ring-1 ring-outline-variant/40">
+        <div class="bg-primary h-full rounded-full transition-all duration-700 ease-out"
              style="width: {{ $percent }}%"></div>
     </div>
-    <p class="text-caption text-on-surface-variant mt-1 text-right">{{ $percent }}% to Level {{ $level + 1 }}</p>
+    <p class="text-caption text-on-surface-variant/80 mt-1.5 text-right">Level {{ $level + 1 }} まで {{ 100 - $percent }}%</p>
 </div>

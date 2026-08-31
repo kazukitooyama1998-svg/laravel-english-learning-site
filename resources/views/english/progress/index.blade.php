@@ -41,56 +41,20 @@ $sectionLabels = [
             {{-- 連続日数表示（コメントアウト。トータル学習日数表示に変更したため） --}}
             {{--
             <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-6 flex items-center gap-4">
-                <div class="text-5xl">🔥</div>
+                <div class="text-coral"><svg class="w-12 h-12" aria-hidden="true"><use href="#m-flame"/></svg></div>
                 <div>
                     <p class="text-display font-black text-primary">{{ $user->study_streak }}</p>
                     <p class="text-body-md text-on-surface-variant">日連続学習</p>
                 </div>
             </div>
             --}}
-            <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-6 flex items-center gap-4">
-                <svg width="56" height="54" viewBox="0 0 104 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="shrink-0">
-                    {{-- しっぽ --}}
-                    <path d="M76 82 Q92 78 96 66 Q88 70 78 74 Z" fill="#8b5e3c"/>
-                    {{-- 体 --}}
-                    <ellipse cx="58" cy="74" rx="22" ry="18" fill="#a06b45"/>
-                    <ellipse cx="56" cy="78" rx="14" ry="11" fill="#e8cfa8"/>
-                    {{-- 頭 --}}
-                    <circle cx="46" cy="46" r="17" fill="#a06b45"/>
-                    <circle cx="35" cy="33" r="4.5" fill="#a06b45"/>
-                    <circle cx="57" cy="33" r="4.5" fill="#a06b45"/>
-                    <circle cx="35" cy="33" r="2" fill="#e8cfa8"/>
-                    <circle cx="57" cy="33" r="2" fill="#e8cfa8"/>
-                    <ellipse cx="46" cy="52" rx="10" ry="8" fill="#e8cfa8"/>
-                    <circle cx="40" cy="44" r="2.2" fill="#1f2937"/>
-                    <circle cx="52" cy="44" r="2.2" fill="#1f2937"/>
-                    <circle cx="40.8" cy="43.2" r="0.7" fill="#fff"/>
-                    <circle cx="52.8" cy="43.2" r="0.7" fill="#fff"/>
-                    <ellipse cx="46" cy="50" rx="2.8" ry="2" fill="#4b2e1e"/>
-                    <path d="M46 52 q0 3 -3 3 M46 52 q0 3 3 3" stroke="#4b2e1e" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-                    <g stroke="#cbd5e1" stroke-width="1.1" stroke-linecap="round">
-                        <path d="M34 49 L26 47 M34 52 L26 53"/>
-                        <path d="M58 49 L66 47 M58 52 L66 53"/>
-                    </g>
-                    {{-- ノート --}}
-                    <g transform="skewX(-4)">
-                        <rect x="14" y="62" width="34" height="24" rx="2.5" fill="#fff8f6" stroke="#ffb599" stroke-width="2"/>
-                        <line x1="20" y1="70" x2="42" y2="70" stroke="#f6ded3" stroke-width="1.6" stroke-linecap="round"/>
-                        <line x1="20" y1="76" x2="38" y2="76" stroke="#f6ded3" stroke-width="1.6" stroke-linecap="round"/>
-                        <line x1="20" y1="82" x2="34" y2="82" stroke="#f6ded3" stroke-width="1.6" stroke-linecap="round"/>
-                    </g>
-                    {{-- ペン --}}
-                    <g transform="rotate(-18 46 82)">
-                        <rect x="44" y="66" width="4.5" height="22" rx="2.2" fill="#f5b52e"/>
-                        <path d="M44 66 h4.5 l-2.25 -5 z" fill="#a33900"/>
-                    </g>
-                    {{-- 前足 --}}
-                    <ellipse cx="36" cy="86" rx="5" ry="3.5" fill="#8b5e3c"/>
-                    <ellipse cx="48" cy="86" rx="5" ry="3.5" fill="#8b5e3c"/>
-                </svg>
+            <div class="biscuit-card p-6 flex items-center gap-4">
+                <span class="grid place-items-center w-14 h-14 shrink-0 rounded-blob bg-primary-container text-primary shadow-biscuit">
+                    <span class="material-symbols-outlined text-2xl">calendar_month</span>
+                </span>
                 <div>
-                    <p class="text-display font-black text-primary">{{ $totalStudyDays }}</p>
-                    <p class="text-body-md text-on-surface-variant">総学習日数</p>
+                    <p class="text-display font-bold text-primary leading-none">{{ $totalStudyDays }}<span class="text-headline-md ml-1">日</span></p>
+                    <p class="text-body-md text-on-surface-variant mt-1">総学習日数</p>
                 </div>
             </div>
         </div>
@@ -196,7 +160,7 @@ $sectionLabels = [
                                 <span class="material-symbols-outlined text-lg" style="color: {{ $examColor }};">event</span>
                             </div>
                             @if($examDate)
-                                <p class="text-caption text-on-surface mb-1">📅 {{ $examDate->format('Y年n月j日') }}</p>
+                                <p class="text-caption text-on-surface mb-1">{{ $examDate->format('Y年n月j日') }}</p>
                                 @if($daysLeft > 0)
                                     <p class="text-headline-md font-black" style="color: {{ $examColor }};">残り {{ $daysLeft }} 日</p>
                                 @elseif($daysLeft === 0)

@@ -13,6 +13,7 @@ import { favoritesPage }    from './vocabulary/favorites.js';
 import { quizSpellingApp }  from './quiz/spelling.js';
 import { quizVocabularyApp } from './quiz/vocabulary.js';
 import { initTypingEngine } from './engine/typing.js';
+import { initMotion }       from './motion.js';
 
 // ── Alpine component registration ────────────────────────────────────────
 // alpine:init fires before Alpine initialises, so components are available
@@ -36,3 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initTypingEngine(cfg);
     }
 });
+
+// ── "Biscuit Zoo" motion layer (scroll reveal, parallax, tap bursts) ─────
+document.addEventListener('DOMContentLoaded', initMotion);

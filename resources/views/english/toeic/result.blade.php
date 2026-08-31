@@ -17,8 +17,8 @@
 
         {{-- スコアサマリーカード --}}
         <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-8 text-center">
-            <div class="text-5xl mb-4">
-                @if($result->accuracy >= 80) 🎉 @elseif($result->accuracy >= 60) 👍 @else 💪 @endif
+            <div class="mb-4 {{ $result->accuracy >= 80 ? 'text-tertiary' : ($result->accuracy >= 60 ? 'text-secondary' : 'text-on-surface-variant') }}">
+                <svg class="w-14 h-14 mx-auto" aria-hidden="true"><use href="#m-medal"/></svg>
             </div>
             <h1 class="text-headline-lg font-bold text-on-surface mb-6">Part {{ $part }} 完了！</h1>
 

@@ -22,7 +22,7 @@ $clearTimeFormatted = sprintf('%d:%02d', intdiv($clearTimeSec, 60), $clearTimeSe
 
         {{-- 結果カード --}}
         <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-8 text-center">
-            <div class="text-5xl mb-3">🎉</div>
+            <div class="mb-4 text-tertiary"><svg class="w-14 h-14 mx-auto" aria-hidden="true"><use href="#m-medal"/></svg></div>
             <h1 class="text-headline-lg font-bold text-on-surface mb-2">
                 {{ $topicMeta['name'] ?? ucfirst($topic) }} × IELTS {{ $score }}
             </h1>

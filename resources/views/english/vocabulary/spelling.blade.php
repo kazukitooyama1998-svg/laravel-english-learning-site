@@ -74,7 +74,7 @@ $wordsJson  = $words->map(fn($w) => [
             <div x-show="isAnswered" class="space-y-4">
                 <div :class="isCorrect ? 'bg-green-50 border-green-200' : 'bg-error-container/30 border-error/20'"
                      class="border rounded-[0.5rem] p-6 text-center">
-                    <p class="text-3xl mb-2" x-text="isCorrect ? '✅' : '❌'"></p>
+                    <p class="material-symbols-outlined text-4xl mb-2" :class="isCorrect ? 'text-tertiary' : 'text-error'" x-text="isCorrect ? 'check_circle' : 'cancel'"></p>
                     <p class="font-bold text-lg" :class="isCorrect ? 'text-green-700' : 'text-error'"
                        x-text="isCorrect ? '正解！' : '不正解'"></p>
                     <p x-show="!isCorrect" class="text-body-md text-on-surface mt-2">
@@ -92,7 +92,7 @@ $wordsJson  = $words->map(fn($w) => [
         {{-- 完了 --}}
         <div x-show="isComplete" class="text-center max-w-md mx-auto">
             <div class="bg-surface-container-lowest rounded-[0.75rem] shadow-sm p-8 mb-6">
-                <div class="text-5xl mb-4">🎉</div>
+                <div class="mb-4 text-tertiary"><svg class="w-14 h-14 mx-auto" aria-hidden="true"><use href="#m-medal"/></svg></div>
                 <h2 class="text-headline-lg font-bold text-on-surface mb-2">完了！</h2>
                 <p class="text-body-md text-on-surface-variant mb-2">スコア</p>
                 <p class="text-display font-black text-primary" x-text="`${score} / ${words.length}`"></p>

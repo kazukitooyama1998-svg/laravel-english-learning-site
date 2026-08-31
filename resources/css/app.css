@@ -1,10 +1,429 @@
-body {
-    font-family: 'Public Sans', sans-serif;
-}
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+/* =========================================================================
+   Axis English — "Lazy English" design language
+   -------------------------------------------------------------------------
+   Reflects the visual world of the @lazy_english_toeic_jp Instagram:
+   a calm, editorial "1 minute a day" study mood. Warm ivory paper,
+   navy-charcoal ink, dusty-blue accent, sage / plum / tan supporting
+   colours, marker-pen highlights on key phrases, small letter-spaced
+   Latin kickers, rounded pill chips and buttons, generous whitespace.
+
+   All illustration is original and flat; no photos, no AI stock, no
+   third-party artwork or characters.
+   ========================================================================= */
+
+:root {
+    /* easings — gentle, a hint of spring */
+    --ease-bounce: cubic-bezier(0.33, 1.25, 0.68, 1);
+    --ease-soft:   cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* decoration palette (mirrors the Tailwind theme tokens) */
+    --c-navy:       #2e3a4f;
+    --c-ink:        #2e3a4f;
+    --c-slate:      #5c6675;
+    --c-blue:       #3d5a80;
+    --c-blue-deep:  #2f496b;
+    --c-mist:       #a9c0d6;
+    --c-sky:        #7fa8c9;
+    --c-sage:       #7c8c5f;
+    --c-olive:      #6f8154;
+    --c-plum:       #75688f;
+    --c-tan:        #a1815f;
+    --c-peach:      #d7a488;
+    --c-honey:      #c98f3c;
+    --c-paper:      #f7f4ec;
+    --c-cream:      #f2eee2;
+    --c-milk:       #fffefb;
+    --c-line:       #dcd6c5;
+
+    /* marker-pen highlight colours */
+    --hl-blue:  #cdddec;
+    --hl-sage:  #dde5cb;
+    --hl-plum:  #e3dcef;
+    --hl-peach: #f2ddcf;
+    --hl-honey: #f3e3c0;
 }
 
-.icon-lg {
-    font-size: 9rem;
+/* -------------------------------------------------------------------------
+   Typography
+   ------------------------------------------------------------------------- */
+body {
+    font-family: 'M PLUS Rounded 1c', 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN',
+        system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.012em;
+}
+
+h1, h2, h3, .font-display,
+.text-display, .text-headline-lg, .text-headline-md, .text-headline-lg-mobile {
+    font-family: 'Zen Maru Gothic', 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN',
+        system-ui, sans-serif;
+    letter-spacing: 0.005em;
+}
+
+/* small english "kicker" label above a heading — with a short underline rule */
+.kicker {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--c-tan);
+}
+.kicker::after {
+    content: "";
+    width: 34px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.55;
+}
+
+/* key-phrase emphasis — kept as plain text (no background highlight) */
+.hl, .hl--sage, .hl--plum, .hl--peach, .hl--honey, .hl-underline {
+    background: none;
+    padding: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Page canvas: warm ivory paper + a whisper of grain + faint cool light
+   ------------------------------------------------------------------------- */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+        radial-gradient(44rem 44rem at 4% -10%, rgba(61, 90, 128, 0.07), transparent 60%),
+        radial-gradient(40rem 40rem at 108% 0%, rgba(124, 140, 95, 0.06), transparent 60%),
+        radial-gradient(46rem 46rem at 50% 122%, rgba(117, 104, 143, 0.05), transparent 60%);
+}
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image:
+        radial-gradient(rgba(46, 58, 79, 0.10) 1.3px, transparent 1.4px),
+        radial-gradient(rgba(161, 129, 95, 0.10) 1.3px, transparent 1.4px);
+    background-size: 32px 32px, 32px 32px;
+    background-position: 0 0, 16px 16px;
+}
+
+/* -------------------------------------------------------------------------
+   Scalloped edges (kept very subtle)
+   ------------------------------------------------------------------------- */
+.scallop-top,
+.scallop-bottom { position: relative; }
+.scallop-top::before,
+.scallop-bottom::after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    height: 14px;
+    background: var(--scallop-color, var(--c-paper));
+    -webkit-mask: radial-gradient(14px at 50% 100%, transparent 98%, #000) 50% 0 / 34px 100% repeat-x;
+            mask: radial-gradient(14px at 50% 100%, transparent 98%, #000) 50% 0 / 34px 100% repeat-x;
+}
+.scallop-top::before    { top: -1px;    transform: translateY(-100%); }
+.scallop-bottom::after   { bottom: -1px; transform: translateY(100%) rotate(180deg); }
+
+/* -------------------------------------------------------------------------
+   Cards — clean, quiet, faint gradient rim option
+   ------------------------------------------------------------------------- */
+.biscuit-card {
+    position: relative;
+    background: var(--c-milk);
+    border: 1px solid var(--c-line);
+    border-radius: 1.25rem;
+    box-shadow: 0 1px 2px rgba(46, 58, 79, 0.05), 0 14px 28px -20px rgba(46, 58, 79, 0.3);
+    transition:
+        transform 0.28s var(--ease-bounce),
+        box-shadow 0.28s var(--ease-soft),
+        border-color 0.28s;
+}
+.biscuit-card:hover {
+    transform: translateY(-3px);
+    border-color: #c7cdd6;
+    box-shadow: 0 2px 4px rgba(46, 58, 79, 0.06), 0 22px 38px -22px rgba(46, 58, 79, 0.34);
+}
+.biscuit-card:active { transform: translateY(-1px); }
+
+/* soft gradient-framed card (like the IG post covers) */
+.frame-card {
+    border-radius: 1.4rem;
+    padding: 6px;
+    background: linear-gradient(135deg, #dbe6cf, #cdddec 45%, #e3dcef);
+}
+.frame-card > * { border-radius: 1rem; background: var(--c-milk); }
+
+/* faint textured panel */
+.biscuit-panel {
+    background-color: var(--c-cream);
+    background-image:
+        radial-gradient(rgba(46, 58, 79, 0.06) 1.4px, transparent 1.5px),
+        radial-gradient(rgba(161, 129, 95, 0.08) 1.3px, transparent 1.4px);
+    background-size: 26px 26px, 26px 26px;
+    background-position: 0 0, 13px 13px;
+    border-radius: 1.1rem;
+}
+
+/* TOEIC score-band chip (600 / 700 / 800 / 900) */
+.chip {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.4rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 0.7rem;
+    color: #fff;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    line-height: 1.05;
+    box-shadow: 0 2px 6px -2px rgba(46, 58, 79, 0.35);
+}
+.chip b   { font-size: 1.1rem; font-weight: 700; }
+.chip span { font-size: 0.62rem; opacity: 0.85; }
+.chip--600 { background: #9c7d5b; }
+.chip--700 { background: #7fa8c9; }
+.chip--800 { background: #3a4a63; }
+.chip--900 { background: #7c6f96; }
+
+/* outlined "save & review" style badge */
+.save-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    border: 1.5px solid var(--c-tan);
+    border-radius: 0.85rem;
+    color: var(--c-navy);
+    line-height: 1.3;
+}
+.save-badge b { font-size: 1rem; font-weight: 700; }
+.save-badge span { font-size: 0.66rem; color: var(--c-slate); }
+
+/* -------------------------------------------------------------------------
+   Buttons — flat rounded pill with a slim lip
+   ------------------------------------------------------------------------- */
+.biscuit-btn {
+    --btn-bg: var(--c-blue);
+    --btn-edge: var(--c-blue-deep);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 9999px;
+    background: var(--btn-bg);
+    color: #fff;
+    font-family: 'Zen Maru Gothic', 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 0 var(--btn-edge), 0 10px 20px -12px rgba(46, 58, 79, 0.5);
+    transition: transform 0.16s var(--ease-bounce), box-shadow 0.16s var(--ease-soft), filter 0.16s;
+}
+.biscuit-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 4px 0 var(--btn-edge), 0 16px 26px -14px rgba(46, 58, 79, 0.55);
+}
+.biscuit-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 var(--btn-edge), 0 4px 10px -8px rgba(46, 58, 79, 0.45);
+}
+.biscuit-btn--honey  { --btn-bg: #d9a94e; --btn-edge: #a9762b; color: #33240a; }
+.biscuit-btn--sage   { --btn-bg: var(--c-olive); --btn-edge: #556340; }
+.biscuit-btn--plum   { --btn-bg: var(--c-plum);  --btn-edge: #574b70; }
+.biscuit-btn--navy   { --btn-bg: var(--c-navy);  --btn-edge: #1e2635; }
+.biscuit-btn--ghost  {
+    background: transparent; color: var(--c-blue);
+    border: 1.5px solid #c3ccd8; box-shadow: none;
+}
+.biscuit-btn--ghost:hover { background: rgba(61, 90, 128, 0.06); filter: none; box-shadow: none; transform: translateY(-1px); }
+
+/* gentle global life for existing primary/secondary buttons */
+a[class*="bg-primary"],
+button[class*="bg-primary"],
+a[class*="bg-secondary"],
+button[class*="bg-secondary"] {
+    transition: transform 0.18s var(--ease-bounce), box-shadow 0.18s var(--ease-soft),
+        opacity 0.18s, background-color 0.18s, filter 0.18s;
+}
+a[class*="bg-primary"]:hover,
+button[class*="bg-primary"]:hover:not(:disabled),
+a[class*="bg-secondary"]:hover,
+button[class*="bg-secondary"]:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+a[class*="bg-primary"]:active,
+button[class*="bg-primary"]:active:not(:disabled),
+a[class*="bg-secondary"]:active,
+button[class*="bg-secondary"]:active:not(:disabled) {
+    transform: translateY(1px) scale(0.985);
+}
+
+.press-squish { transition: transform 0.12s var(--ease-bounce); }
+.press-squish:active { transform: scale(0.95); }
+
+/* -------------------------------------------------------------------------
+   Motif layer — minimal, geometric, barely there
+   ------------------------------------------------------------------------- */
+.motif-field {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+.motif-sky {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+.motif {
+    position: absolute;
+    display: block;
+    will-change: transform;
+}
+.motif svg { display: block; width: 100%; height: 100%; }
+
+.motif--bob      { animation: m-bob 6s var(--ease-soft) infinite; }
+.motif--bob-slow { animation: m-bob 8s var(--ease-soft) infinite; }
+.motif--sway     { animation: m-sway 9s ease-in-out infinite; transform-origin: 50% 100%; }
+.motif--wobble   { animation: m-sway 8s ease-in-out infinite; transform-origin: 50% 90%; }
+.motif--spin     { animation: m-spin 40s linear infinite; }
+.motif--spin-rev { animation: m-spin 48s linear infinite reverse; }
+.motif--twinkle  { animation: m-twinkle 4s ease-in-out infinite; }
+.motif--drift    { animation: m-drift 48s linear infinite; }
+
+.motif:nth-of-type(2) { animation-delay: -1.6s; }
+.motif:nth-of-type(3) { animation-delay: -3.2s; }
+.motif:nth-of-type(4) { animation-delay: -4.6s; }
+
+@keyframes m-bob    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes m-sway   { 0%, 100% { transform: rotate(-2.5deg); } 50% { transform: rotate(2.5deg); } }
+@keyframes m-spin   { to { transform: rotate(360deg); } }
+@keyframes m-twinkle{ 0%, 100% { transform: scale(0.85); opacity: 0.35; } 50% { transform: scale(1.03); opacity: 0.7; } }
+@keyframes m-drift  { 0% { transform: translateX(-8%); } 100% { transform: translateX(108%); } }
+
+/* -------------------------------------------------------------------------
+   Hover playfulness — restrained
+   ------------------------------------------------------------------------- */
+.hover-hop      { transition: transform 0.25s var(--ease-bounce); }
+.group:hover .hover-hop,
+.hover-hop:hover { animation: fx-hop 0.5s var(--ease-bounce); }
+
+.hover-spin      { transition: transform 0.45s var(--ease-bounce); }
+.group:hover .hover-spin,
+.hover-spin:hover { transform: rotate(180deg); }
+
+.hover-wobble:hover,
+.group:hover .hover-wobble { animation: fx-wobble 0.6s ease-in-out; }
+
+.hover-jelly:hover,
+.group:hover .hover-jelly { animation: fx-jelly 0.55s var(--ease-bounce); }
+
+@keyframes fx-hop {
+    0% { transform: translateY(0); }
+    35% { transform: translateY(-6px); }
+    60% { transform: translateY(0); }
+    80% { transform: translateY(-2px); }
+    100% { transform: translateY(0); }
+}
+@keyframes fx-wobble {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(-6deg); }
+    50% { transform: rotate(4deg); }
+    75% { transform: rotate(-2deg); }
+}
+@keyframes fx-jelly {
+    0%, 100% { transform: scale(1, 1); }
+    35% { transform: scale(1.06, 0.94); }
+    60% { transform: scale(0.97, 1.03); }
+}
+
+/* -------------------------------------------------------------------------
+   Scroll reveal (progressive enhancement — see .js gate)
+   ------------------------------------------------------------------------- */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity 0.55s var(--ease-soft),
+        transform 0.55s var(--ease-bounce);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* small celebratory pop (JS burst particles) */
+.fx-burst {
+    position: fixed;
+    z-index: 9998;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation: fx-burst 0.85s var(--ease-soft) forwards;
+}
+@keyframes fx-burst {
+    0% { transform: translate(0, 0) scale(0.3); opacity: 0.9; }
+    100% {
+        transform: translate(var(--bx, 0), var(--by, -50px)) scale(0.9) rotate(var(--br, 90deg));
+        opacity: 0;
+    }
+}
+
+.mascot-idle { animation: mascot-idle 6s var(--ease-soft) infinite; transform-origin: 50% 100%; }
+@keyframes mascot-idle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* -------------------------------------------------------------------------
+   Nav / drawer / footer polish
+   ------------------------------------------------------------------------- */
+nav.sticky {
+    background: rgba(247, 244, 236, 0.85) !important;
+    border-bottom: 1px solid var(--c-line) !important;
+}
+#custom-drawer {
+    border-top-left-radius: 1.25rem;
+    border-bottom-left-radius: 1.25rem;
+}
+#custom-drawer .p-4 > a { transition: transform 0.2s var(--ease-bounce), background-color 0.2s, color 0.2s; }
+#custom-drawer .p-4 > a:hover { transform: translateX(3px); }
+
+.material-symbols-outlined { transition: transform 0.25s var(--ease-bounce); }
+
+[class*="bg-primary"][style*="width"] {
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 45%);
+}
+
+.icon-lg { font-size: 9rem; }
+
+/* -------------------------------------------------------------------------
+   Accessibility — honour reduced-motion
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .motif { display: none; }
 }

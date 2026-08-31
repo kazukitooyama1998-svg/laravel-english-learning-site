@@ -66,9 +66,9 @@ return [
 
     // IELTS トピックのメタ情報
     'ielts_topic_meta' => [
-        'education'   => ['name' => 'Education',   'emoji' => '🎓', 'desc' => '学校・大学・教育制度・学習方法について話す'],
-        'technology'  => ['name' => 'Technology',  'emoji' => '💻', 'desc' => 'SNS・AI・デジタル技術の影響について話す'],
-        'environment' => ['name' => 'Environment', 'emoji' => '🌿', 'desc' => '環境問題・気候変動・持続可能性について話す'],
+        'education'   => ['name' => 'Education',   'icon' => 'school', 'desc' => '学校・大学・教育制度・学習方法について話す'],
+        'technology'  => ['name' => 'Technology',  'icon' => 'devices', 'desc' => 'SNS・AI・デジタル技術の影響について話す'],
+        'environment' => ['name' => 'Environment', 'icon' => 'eco', 'desc' => '環境問題・気候変動・持続可能性について話す'],
     ],
 
     // IELTS Part のメタ情報

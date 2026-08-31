@@ -52,10 +52,17 @@
                     @endphp
                     <tr class="{{ $rank <= 3 ? 'bg-primary/5 font-semibold' : '' }} {{ $isMe ? 'bg-primary/10 ring-1 ring-inset ring-primary/30' : '' }} hover:bg-surface-container-low/50 transition-colors">
                         <td class="py-4 px-4 text-center font-bold">
-                            @if($rank === 1) <span class="text-xl">🥇</span>
-                            @elseif($rank === 2) <span class="text-xl">🥈</span>
-                            @elseif($rank === 3) <span class="text-xl">🥉</span>
-                            @else <span class="text-on-surface-variant text-sm">{{ $rank }}</span>
+                            @php
+                                $badge = [
+                                    1 => 'bg-[#e6b422] text-white shadow-[0_2px_0_#b98a13]',
+                                    2 => 'bg-[#b7bcc4] text-white shadow-[0_2px_0_#8b9098]',
+                                    3 => 'bg-[#c88a4b] text-white shadow-[0_2px_0_#9c6733]',
+                                ][$rank] ?? null;
+                            @endphp
+                            @if($badge)
+                                <span class="inline-grid place-items-center w-8 h-8 rounded-full font-display font-bold text-sm {{ $badge }}">{{ $rank }}</span>
+                            @else
+                                <span class="text-on-surface-variant text-sm">{{ $rank }}</span>
                             @endif
                         </td>
                         <td class="py-4 px-4 text-on-surface">
