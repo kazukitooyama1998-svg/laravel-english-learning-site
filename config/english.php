@@ -139,4 +139,81 @@ return [
         'toeic_bonus_low'             => 50,  // 正答率 80% 未満
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | 英語の森（3D アイランド）設定
+    |--------------------------------------------------------------------------
+    |
+    | 島に配置する施設（スポット）の定義。x / z はワールド座標（島の中心が原点、
+    | 島の芝生の半径はおよそ 30）、rot は Y 軸回転（ラジアン）。
+    | kind は 3D モデルの種類で resources/js/english/forest/spots.js と対応する。
+    |
+    */
+
+    'forest_spots' => [
+        [
+            'key'   => 'vocabulary',
+            'kind'  => 'bigtree',
+            'name'  => '単語の木',
+            'desc'  => '英単語を覚える',
+            'route' => 'english.vocabulary.index',
+            'color' => '#5c7250',
+            'x' => -16.0, 'z' => -7.0, 'rot' => 0.35,
+        ],
+        [
+            'key'   => 'toeic',
+            'kind'  => 'tent',
+            'name'  => 'TOEIC キャンプ',
+            'desc'  => 'Part 別の対策',
+            'route' => 'english.toeic.index',
+            'color' => '#c98f3c',
+            'x' => 9.0, 'z' => -17.0, 'rot' => -0.5,
+        ],
+        [
+            'key'   => 'ielts',
+            'kind'  => 'lighthouse',
+            'name'  => 'IELTS 灯台',
+            'desc'  => 'スピーキング練習',
+            'route' => 'english.ielts.index',
+            'color' => '#b4483a',
+            'x' => 21.0, 'z' => 6.0, 'rot' => 0.0,
+        ],
+        [
+            'key'   => 'typing',
+            'kind'  => 'cabin',
+            'name'  => 'タイピング小屋',
+            'desc'  => '指を動かして覚える',
+            'route' => 'english.typing.index',
+            'color' => '#a1815f',
+            'x' => -9.0, 'z' => 16.0, 'rot' => -2.6,
+        ],
+        [
+            'key'   => 'quiz',
+            'kind'  => 'stage',
+            'name'  => 'クイズ広場',
+            'desc'  => '力だめしのクイズ',
+            'route' => 'english.quiz.index',
+            'color' => '#75688f',
+            'x' => 15.0, 'z' => 14.0, 'rot' => -0.8,
+        ],
+        [
+            'key'   => 'ranking',
+            'kind'  => 'tower',
+            'name'  => 'ランキング展望台',
+            'desc'  => 'みんなの順位を見る',
+            'route' => 'english.ranking',
+            'color' => '#3d5a80',
+            'x' => -20.0, 'z' => 9.0, 'rot' => 0.9,
+        ],
+        [
+            'key'   => 'progress',
+            'kind'  => 'board',
+            'name'  => '学習の掲示板',
+            'desc'  => '進捗をふりかえる',
+            'route' => 'english.progress',
+            'color' => '#6f8154',
+            'x' => 1.0, 'z' => -9.0, 'rot' => 0.15,
+        ],
+    ],
+
 ];

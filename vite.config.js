@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/english/app.js',
+                'resources/js/english/forest/app.js',
             ],
             refresh: true,
         }),

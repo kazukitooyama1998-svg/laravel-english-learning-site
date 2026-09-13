@@ -12,6 +12,7 @@ use App\Http\Controllers\UsersController; // 💡Admin用コントローラー�
 
 // 英語学習モジュール Controllers
 use App\Http\Controllers\English\HubController;
+use App\Http\Controllers\English\ForestController;
 use App\Http\Controllers\English\Toeic\ToeicController;
 use App\Http\Controllers\English\Ielts\IeltsController;
 use App\Http\Controllers\English\Vocabulary\VocabularyController;
@@ -151,6 +152,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/',               [LearningContentController::class, 'strategyIndex'])->name('index');
             Route::get('/{exam}/{level}', [LearningContentController::class, 'strategyShow'])->name('show')->whereIn('exam', config('english.exam_types'));
         });
+
+        // ── 英語の森（3D アイランド） ─────────────────────────────────────
+        // ログイン済みユーザーのみ入島・移動できる（auth + verified グループ内）
+        Route::get('/forest', [ForestController::class, 'index'])->name('forest');
 
         // ── 学習管理・ランキング ──────────────────────────────────────────
         Route::get('/progress', [EnglishProgressController::class, 'index'])->name('progress');
