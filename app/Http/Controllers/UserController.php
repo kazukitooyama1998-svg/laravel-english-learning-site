@@ -31,10 +31,10 @@ class UserController extends Controller
         $user = Auth::user();
 
         // 1. 基本情報のバリデーション
+        // 💡 プロフィール画像のアップロード機能は廃止。アイコンは選択済みキャラクター（character_key）に従う。
         $request->validate([
             'name'         => 'required|min:1|max:255',
             'email'        => 'required|email|max:255|unique:users,email,' . $user->id,
-            'avatar'       => 'nullable|image|mimes:jpeg,png,gif|max:1048',
             'introduction' => 'nullable|string|max:100',
         ]);
 
@@ -43,18 +43,7 @@ class UserController extends Controller
         $user->email        = $request->email;
         $user->introduction = $request->introduction;
 
-        // 3. アバター画像処理 (Base64)
-        // 削除チェックボックスがオンならnullにする
-        if ($request->has('remove_avatar')) {
-            $user->avatar = null;
-        } 
-        // 新しい画像がアップロードされたらBase64に変換して保存
-        elseif ($request->hasFile('avatar')) {
-            $user->avatar = 'data:image/' . $request->avatar->extension() . 
-                            ';base64,' . base64_encode(file_get_contents($request->avatar));
-        }
-
-        // 4. パスワード変更処理
+        // 3. パスワード変更処理
         if ($request->filled('current_password') || $request->filled('new_password')) {
             $request->validate([
                 'current_password' => ['required'],

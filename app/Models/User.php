@@ -129,6 +129,20 @@ class User extends Authenticatable
     }
 
     /**
+     * 選択済みキャラクターの情報を config/english.php から解決して返す。
+     * 未選択（登録直後など）の場合は 1 匹目をフォールバックとして返す。
+     */
+    public function getCharacterAttribute(): array
+    {
+        $characters = config('english.characters');
+        $key        = $this->character_key && isset($characters[$this->character_key])
+            ? $this->character_key
+            : array_key_first($characters);
+
+        return ['key' => $key] + $characters[$key];
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -137,7 +151,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar',
+        'character_key',
         'introduction',
         'role_id',
         'total_xp',

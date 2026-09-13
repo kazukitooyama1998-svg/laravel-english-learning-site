@@ -8,6 +8,7 @@ use App\Http\Controllers\RecordController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\UsersController; // 💡Admin用コントローラー（例）　後で\Adminを加える必要があるか確認
 
 // 英語学習モジュール Controllers
@@ -31,6 +32,18 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Laravelの標準認証ルート（Login, Register, メール認証など）
 Auth::routes(['verify' => true]); // 💡'verify' => true で要件のメール認証を有効化
+
+/*
+|--------------------------------------------------------------------------
+| 1.5 オンボーディング（ログイン必須・メール認証は不要）
+|--------------------------------------------------------------------------
+| 登録直後（メール未認証の状態）でもキャラクターを選べるよう、
+| 'verified' は付けずに 'auth' のみのグループにしている。
+*/
+Route::middleware(['auth'])->group(function () {
+    Route::get('/character/select', [CharacterController::class, 'select'])->name('character.select');
+    Route::post('/character/select', [CharacterController::class, 'store'])->name('character.select.store');
+});
 
 /*
 |--------------------------------------------------------------------------

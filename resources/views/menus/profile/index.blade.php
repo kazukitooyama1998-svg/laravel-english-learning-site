@@ -15,12 +15,8 @@
         {{-- プロフィールヘッダーエリア --}}
         <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-sm">
             <div class="flex flex-col items-center text-center gap-6">
-                {{-- アバター --}}
-                @if ($user->avatar)
-                    <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="w-20 h-20 rounded-full object-cover">
-                @else
-                    <i class="fa-solid fa-circle-user text-secondary d-block text-center icon-lg"></i>
-                @endif
+                {{-- アイコン（選択済みキャラクター） --}}
+                <x-character.badge :character="$user->character" size="xl" />
                 {{-- 名前 --}}
                 <div class="w-full">
                     <div class="flex items-center justify-center gap-3">
@@ -30,6 +26,10 @@
                            Edit
                         </a>
                     </div>
+                    <p class="text-body-md text-on-surface-variant mt-1">
+                        {{ $user->character['name'] }}（{{ $user->character['species'] }}）と冒険中
+                        <a href="{{ route('character.select', ['redirect' => 'profile']) }}" class="text-primary font-bold hover:opacity-80">キャラクターを変える</a>
+                    </p>
                 </div>
             </div>
         </div>

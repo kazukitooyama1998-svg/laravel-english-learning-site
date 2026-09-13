@@ -12,34 +12,24 @@
             </a>
         </div>
 
-        <form action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('profile.update') }}" method="post">
             @csrf
             @method('PATCH')
 
             <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-sm">
-                
+
                 <h2 class="text-2xl font-bold text-on-surface mb-6">Update Profile</h2>
-                
-                {{-- アバター表示部分を以下のように修正 --}}
+
+                {{-- アイコン：写真アップロードは廃止し、選択済みキャラクターを表示 --}}
                 <div class="flex items-center gap-6 mb-6">
-                    <div class="col-4">
-                        @if ($user->avatar)
-                            <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="w-20 h-20 rounded-full object-cover">
-                            {{-- 削除チェックボックス --}}
-                            <div class="mt-2 text-center">
-                                <label class="flex items-center justify-center gap-2 text-xs text-error cursor-pointer">
-                                    <input type="checkbox" name="remove_avatar" class="rounded border-outline-variant">
-                                    Delete photo
-                                </label>
-                            </div>
-                        @else
-                            <i class="fa-solid fa-circle-user text-6xl text-secondary"></i>
-                        @endif
-                    </div>
+                    <x-character.badge :character="$user->character" size="lg" />
                     <div class="flex-1">
-                        <input type="file" name="avatar" class="block w-full text-sm text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-primary file:text-white hover:file:opacity-90">
-                        <div class="text-xs text-on-surface-variant mt-2">Acceptable: jpg, jpeg, png, gif. Max 1048kb.</div>
-                        @error('avatar') <p class="text-error text-xs mt-1">{{ $message }}</p> @enderror
+                        <p class="text-sm font-bold text-on-surface">{{ $user->character['name'] }}（{{ $user->character['species'] }}）</p>
+                        <p class="text-xs text-on-surface-variant mt-1">アイコンは「英語の森」で選んだキャラクターです。</p>
+                        <a href="{{ route('character.select', ['redirect' => 'profile']) }}"
+                           class="inline-flex items-center gap-1.5 mt-2 text-sm font-bold text-primary hover:opacity-80">
+                            <i class="fa-solid fa-shuffle text-xs"></i> キャラクターを変える
+                        </a>
                     </div>
                 </div>
 

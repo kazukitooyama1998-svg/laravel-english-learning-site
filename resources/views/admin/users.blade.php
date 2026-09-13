@@ -44,13 +44,7 @@
                     {{-- 💡 x-data="{ showModal: false }" をここに追加 --}}
                     <tr class="hover:bg-surface-container-low transition-colors" x-data="{ showModal: false }">
                         <td class="p-4">
-                            @if ($user->avatar)
-                                <img src="{{ $user->avatar }}" alt="{{ $user->name }}" class="size-10 rounded-full object-cover">
-                            @else
-                                <div class="size-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
-                                    <i class="fa-solid fa-circle-user text-xl"></i>
-                                </div>
-                            @endif
+                            <x-character.badge :character="$user->character" size="sm" />
                         </td>
                         <td class="p-4 font-semibold text-on-surface">
                             <a href="{{ route('profile.show', $user->id) }}" class="hover:text-primary no-underline">

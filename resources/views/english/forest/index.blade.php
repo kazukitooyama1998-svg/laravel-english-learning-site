@@ -101,19 +101,6 @@
             gap: .75rem;
             padding: .7rem .95rem;
         }
-        .hud-player img,
-        .hud-player .avatar-fallback {
-            width: 44px;
-            height: 44px;
-            border-radius: 999px;
-            object-fit: cover;
-            display: grid;
-            place-items: center;
-            background: var(--primary);
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
         .hud-player .meta { line-height: 1.3; }
         .hud-player .place {
             font-size: .7rem;
@@ -288,7 +275,6 @@
 
         @media (max-width: 640px) {
             .hud-player { padding: .5rem .7rem; gap: .5rem; }
-            .hud-player img, .hud-player .avatar-fallback { width: 36px; height: 36px; }
             .hud-player .name { font-size: .9rem; }
             .btn { padding: .5rem .75rem; font-size: .8rem; }
         }
@@ -300,11 +286,7 @@
 
     {{-- 左上：ログイン中のユーザー --}}
     <div class="hud hud-player panel">
-        @if ($player['avatar'])
-            <img src="{{ $player['avatar'] }}" alt="{{ $user->name }}">
-        @else
-            <span class="avatar-fallback">{{ mb_substr($user->name, 0, 1) }}</span>
-        @endif
+        <x-character.badge :character="$player['character']" size="sm" />
         <div class="meta">
             <div class="place">英語の森 · English Forest</div>
             <div class="name">{{ $user->name }}</div>
