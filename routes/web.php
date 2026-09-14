@@ -169,6 +169,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // ── 英語の森（3D アイランド） ─────────────────────────────────────
         // ログイン済みユーザーのみ入島・移動できる（auth + verified グループ内）
         Route::get('/forest', [ForestController::class, 'index'])->name('forest');
+        // じぶんの家（室内の 3D 空間と模様替え）
+        Route::get('/forest/home', [ForestController::class, 'home'])->name('forest.home');
+        Route::post('/forest/home', [ForestController::class, 'saveRoom'])->name('forest.home.save');
 
         // ── 学習管理・ランキング ──────────────────────────────────────────
         Route::get('/progress', [EnglishProgressController::class, 'index'])->name('progress');

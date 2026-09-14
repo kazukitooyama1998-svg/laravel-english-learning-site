@@ -4,7 +4,9 @@ namespace App\Http\Controllers\English;
 
 use App\Http\Controllers\Controller;
 use App\Services\English\XpService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 /**
  * 英語の森（3D アイランド）
@@ -57,5 +59,81 @@ class ForestController extends Controller
         ];
 
         return view('english.forest.index', compact('user', 'spots', 'player', 'levelInfo'));
+    }
+
+    /**
+     * じぶんの家（室内の 3D 空間）
+     * GET /english/forest/home
+     */
+    public function home()
+    {
+        $user = Auth::user();
+
+        if (! $user->character_key) {
+            return redirect()->route('character.select', ['redirect' => 'forest']);
+        }
+
+        $levelInfo = $this->xpService->getLevelInfo($user);
+
+        $player = [
+            'name'      => $user->name,
+            'level'     => $levelInfo['level'],
+            'character' => $user->character,
+        ];
+
+        // 模様替えに必要なカタログ一式（家具・床・壁）と、保存済みのレイアウト
+        $catalog = [
+            'furniture' => config('english.furniture'),
+            'floors'    => config('english.room_floors'),
+            'walls'     => config('english.room_walls'),
+            'room'      => config('english.room'),
+        ];
+
+        return view('english.forest.home', [
+            'user'    => $user,
+            'player'  => $player,
+            'catalog' => $catalog,
+            'layout'  => $user->room,
+            'saveUrl' => route('english.forest.home.save'),
+            'exitUrl' => route('english.forest'),
+        ]);
+    }
+
+    /**
+     * 模様替えの保存
+     * POST /english/forest/home
+     */
+    public function saveRoom(Request $request)
+    {
+        $room = config('english.room');
+
+        // 家具は部屋の内側にしか置けない。範囲外の座標は弾く。
+        $halfW = $room['width'] / 2;
+        $halfD = $room['depth'] / 2;
+
+        $validated = $request->validate([
+            'floor'         => ['required', Rule::in(array_keys(config('english.room_floors')))],
+            'wall'          => ['required', Rule::in(array_keys(config('english.room_walls')))],
+            'items'         => ['present', 'array', 'max:60'],
+            'items.*.key'   => ['required', Rule::in(array_keys(config('english.furniture')))],
+            'items.*.x'     => ['required', 'numeric', 'between:' . (-$halfW) . ',' . $halfW],
+            'items.*.z'     => ['required', 'numeric', 'between:' . (-$halfD) . ',' . $halfD],
+            'items.*.rot'   => ['required', 'numeric', 'between:-7,7'],
+        ]);
+
+        $user = Auth::user();
+        $user->room_layout = [
+            'floor' => $validated['floor'],
+            'wall'  => $validated['wall'],
+            'items' => array_map(fn (array $item) => [
+                'key' => $item['key'],
+                'x'   => round((float) $item['x'], 2),
+                'z'   => round((float) $item['z'], 2),
+                'rot' => round((float) $item['rot'], 3),
+            ], $validated['items']),
+        ];
+        $user->save();
+
+        return response()->json(['status' => 'ok']);
     }
 }

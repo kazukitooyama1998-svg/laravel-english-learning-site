@@ -29,6 +29,15 @@ export class Player {
 
         const character = profile.character || {};
         const rig = buildCharacter(character);
+
+        // 体のパーツ同士でも影を落とし合わせる（あごの下や腕の内側に陰ができる）
+        rig.group.traverse((child) => {
+            if (child.isMesh && child.material?.type !== 'MeshBasicMaterial') {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
         this.group = rig.group;
         this.body = rig.body;
         this.head = rig.head;

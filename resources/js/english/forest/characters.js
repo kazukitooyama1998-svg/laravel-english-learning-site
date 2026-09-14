@@ -11,7 +11,10 @@
  */
 import * as THREE from 'three';
 
-const mat = (color, flat = false) => new THREE.MeshLambertMaterial({ color, flatShading: flat });
+// 毛並みはざらついた質感（roughness 高め）にすると、光の当たり方で丸みが出る
+const mat = (color, flat = false) => new THREE.MeshStandardMaterial({
+    color, flatShading: flat, roughness: 0.82, metalness: 0,
+});
 
 /**
  * 全キャラクター共通の骨格（胴体・頭・腕・脚・影）を組み立てる。

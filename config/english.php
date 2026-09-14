@@ -238,7 +238,7 @@ return [
             'desc'  => '英単語を覚える',
             'route' => 'english.vocabulary.index',
             'color' => '#5c7250',
-            'x' => -16.0, 'z' => -7.0, 'rot' => 0.35,
+            'x' => -21.6, 'z' => -9.5, 'rot' => 0.35,
         ],
         [
             'key'   => 'toeic',
@@ -247,7 +247,7 @@ return [
             'desc'  => 'Part 別の対策',
             'route' => 'english.toeic.index',
             'color' => '#c98f3c',
-            'x' => 9.0, 'z' => -17.0, 'rot' => -0.5,
+            'x' => 12.2, 'z' => -23.0, 'rot' => -0.5,
         ],
         [
             'key'   => 'ielts',
@@ -256,7 +256,7 @@ return [
             'desc'  => 'スピーキング練習',
             'route' => 'english.ielts.index',
             'color' => '#b4483a',
-            'x' => 21.0, 'z' => 6.0, 'rot' => 0.0,
+            'x' => 28.4, 'z' => 8.1, 'rot' => 0.0,
         ],
         [
             'key'   => 'typing',
@@ -265,7 +265,7 @@ return [
             'desc'  => '指を動かして覚える',
             'route' => 'english.typing.index',
             'color' => '#a1815f',
-            'x' => -9.0, 'z' => 16.0, 'rot' => -2.6,
+            'x' => -12.2, 'z' => 21.6, 'rot' => -2.6,
         ],
         [
             'key'   => 'quiz',
@@ -274,7 +274,7 @@ return [
             'desc'  => '力だめしのクイズ',
             'route' => 'english.quiz.index',
             'color' => '#75688f',
-            'x' => 15.0, 'z' => 14.0, 'rot' => -0.8,
+            'x' => 20.2, 'z' => 18.9, 'rot' => -0.8,
         ],
         [
             'key'   => 'ranking',
@@ -283,7 +283,16 @@ return [
             'desc'  => 'みんなの順位を見る',
             'route' => 'english.ranking',
             'color' => '#3d5a80',
-            'x' => -20.0, 'z' => 9.0, 'rot' => 0.9,
+            'x' => -27.0, 'z' => 12.2, 'rot' => 0.9,
+        ],
+        [
+            'key'   => 'home',
+            'kind'  => 'house',
+            'name'  => 'じぶんの家',
+            'desc'  => '中に入って模様替え',
+            'route' => 'english.forest.home',
+            'color' => '#c98f3c',
+            'x' => 0.0, 'z' => 24.0, 'rot' => 0.0,
         ],
         [
             'key'   => 'progress',
@@ -292,7 +301,75 @@ return [
             'desc'  => '進捗をふりかえる',
             'route' => 'english.progress',
             'color' => '#6f8154',
-            'x' => 1.0, 'z' => -9.0, 'rot' => 0.15,
+            'x' => 1.4, 'z' => -12.2, 'rot' => 0.15,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | じぶんの家（インテリア）設定
+    |--------------------------------------------------------------------------
+    |
+    | 部屋に置ける家具のカタログ。kind は 3D モデルの種類で
+    | resources/js/english/home/furniture.js と対応する。
+    | size は床に占める大きさ（メートル）で、配置時の当たり判定に使う。
+    |
+    */
+
+    // 部屋の広さ（メートル）。壁の内側の寸法。
+    'room' => [
+        'width' => 12.0,
+        'depth' => 10.0,
+        'height' => 3.4,
+    ],
+
+    // 床・壁の選択肢（模様替え用）
+    'room_floors' => [
+        'oak'    => ['name' => 'オーク材',   'color' => '#c89a63'],
+        'walnut' => ['name' => 'ウォルナット', 'color' => '#8a5c3b'],
+        'tatami' => ['name' => 'たたみ',     'color' => '#c3c98a'],
+        'tile'   => ['name' => 'タイル',     'color' => '#dcd8cf'],
+        'carpet' => ['name' => 'カーペット',  'color' => '#9fb08a'],
+    ],
+
+    'room_walls' => [
+        'cream'  => ['name' => 'クリーム',   'color' => '#f2e8d5'],
+        'mint'   => ['name' => 'ミント',     'color' => '#d5e8dd'],
+        'sky'    => ['name' => 'スカイ',     'color' => '#d8e6f2'],
+        'rose'   => ['name' => 'ローズ',     'color' => '#f2ddde'],
+        'wood'   => ['name' => '板張り',     'color' => '#d8bc93'],
+    ],
+
+    'furniture' => [
+        'bed'       => ['name' => 'ベッド',       'kind' => 'bed',       'w' => 2.0, 'd' => 3.0, 'color' => '#7fa8c9'],
+        'desk'      => ['name' => 'つくえ',       'kind' => 'desk',      'w' => 2.2, 'd' => 1.1, 'color' => '#a1815f'],
+        'chair'     => ['name' => 'いす',         'kind' => 'chair',     'w' => 0.9, 'd' => 0.9, 'color' => '#c98f3c'],
+        'bookshelf' => ['name' => '本だな',       'kind' => 'bookshelf', 'w' => 2.0, 'd' => 0.6, 'color' => '#8a5f3c'],
+        'table'     => ['name' => 'テーブル',     'kind' => 'table',     'w' => 1.6, 'd' => 1.6, 'color' => '#b5834f'],
+        'sofa'      => ['name' => 'ソファ',       'kind' => 'sofa',      'w' => 2.6, 'd' => 1.2, 'color' => '#6f8154'],
+        'rug'       => ['name' => 'ラグ',         'kind' => 'rug',       'w' => 3.0, 'd' => 2.2, 'color' => '#d7a488'],
+        'plant'     => ['name' => 'かんようしょくぶつ', 'kind' => 'plant', 'w' => 0.9, 'd' => 0.9, 'color' => '#5c7250'],
+        'lamp'      => ['name' => 'フロアランプ', 'kind' => 'lamp',      'w' => 0.7, 'd' => 0.7, 'color' => '#f2d27a'],
+        'clock'     => ['name' => 'かけ時計',     'kind' => 'clock',     'w' => 0.8, 'd' => 0.3, 'color' => '#75688f'],
+        'globe'     => ['name' => 'ちきゅうぎ',   'kind' => 'globe',     'w' => 0.8, 'd' => 0.8, 'color' => '#4f8481'],
+        'chest'     => ['name' => 'たんす',       'kind' => 'chest',     'w' => 1.6, 'd' => 0.8, 'color' => '#9c7d5b'],
+    ],
+
+    // 初めて家に入ったときの初期レイアウト（x/z は部屋の中心が原点、rot はラジアン）
+    'default_room' => [
+        'floor' => 'oak',
+        'wall'  => 'cream',
+        'items' => [
+            ['key' => 'bed',       'x' => -3.8, 'z' => -2.6, 'rot' => 0],
+            ['key' => 'chest',     'x' => -1.2, 'z' => -4.2, 'rot' => 0],
+            ['key' => 'desk',      'x' =>  3.6, 'z' => -3.8, 'rot' => 0],
+            ['key' => 'chair',     'x' =>  3.6, 'z' => -2.4, 'rot' => 3.14],
+            ['key' => 'bookshelf', 'x' =>  5.0, 'z' =>  0.6, 'rot' => 1.5708],
+            ['key' => 'rug',       'x' =>  0.6, 'z' =>  2.2, 'rot' => 0],
+            ['key' => 'sofa',      'x' =>  0.6, 'z' =>  3.6, 'rot' => 3.14],
+            ['key' => 'table',     'x' =>  0.6, 'z' =>  1.8, 'rot' => 0],
+            ['key' => 'plant',     'x' => -4.6, 'z' =>  3.6, 'rot' => 0],
+            ['key' => 'lamp',      'x' =>  4.6, 'z' =>  3.4, 'rot' => 0],
         ],
     ],
 

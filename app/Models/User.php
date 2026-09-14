@@ -143,6 +143,24 @@ class User extends Authenticatable
     }
 
     /**
+     * 「じぶんの家」の模様替え内容。未設定なら初期レイアウトを返す。
+     */
+    public function getRoomAttribute(): array
+    {
+        $layout = $this->room_layout;
+
+        if (! is_array($layout) || empty($layout['items'])) {
+            return config('english.default_room');
+        }
+
+        return [
+            'floor' => $layout['floor'] ?? 'oak',
+            'wall'  => $layout['wall'] ?? 'cream',
+            'items' => $layout['items'],
+        ];
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -152,6 +170,7 @@ class User extends Authenticatable
         'email',
         'password',
         'character_key',
+        'room_layout',
         'introduction',
         'role_id',
         'total_xp',
@@ -181,6 +200,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at'  => 'datetime',
+            'room_layout'        => 'array',
             'password'           => 'hashed',
             'last_study_date'    => 'date',
             'total_xp'           => 'integer',

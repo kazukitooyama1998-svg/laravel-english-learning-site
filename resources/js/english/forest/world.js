@@ -6,10 +6,13 @@
  */
 import * as THREE from 'three';
 import { Island, ISLAND } from './island.js';
-import { makeRng, scatterProps, createBird } from './props.js';
+import { makeRng, scatterProps, createBird, createGrassField, updateWind } from './props.js';
 import { buildSpots, updateSpots } from './spots.js';
 import { Player } from './player.js';
 import { Input } from './input.js';
+
+// 太陽の方向（光・空・海の輝きで共有する）
+const SUN_DIRECTION = new THREE.Vector3(0.42, 0.86, 0.32).normalize();
 
 const SKY_VERT = `
     varying vec3 vWorldPosition;
@@ -20,15 +23,29 @@ const SKY_VERT = `
     }
 `;
 
+// 天頂 → 空色 → 地平のかすみ、に太陽まわりのにじみを足した空
 const SKY_FRAG = `
-    uniform vec3 topColor;
-    uniform vec3 bottomColor;
-    uniform float offset;
-    uniform float exponent;
+    uniform vec3 zenithColor;
+    uniform vec3 skyColor;
+    uniform vec3 horizonColor;
+    uniform vec3 sunDirection;
+    uniform vec3 sunColor;
     varying vec3 vWorldPosition;
+
     void main() {
-        float h = normalize(vWorldPosition + vec3(0.0, offset, 0.0)).y;
-        gl_FragColor = vec4(mix(bottomColor, topColor, max(pow(max(h, 0.0), exponent), 0.0)), 1.0);
+        vec3 dir = normalize(vWorldPosition);
+        float h = clamp(dir.y, -1.0, 1.0);
+
+        // 地平線付近をかすませ、上に行くほど濃い青にする
+        vec3 color = mix(horizonColor, skyColor, smoothstep(-0.02, 0.28, h));
+        color = mix(color, zenithColor, smoothstep(0.25, 0.85, h));
+
+        // 太陽まわりのにじみと、小さな太陽本体
+        float sun = max(dot(dir, normalize(sunDirection)), 0.0);
+        color += sunColor * pow(sun, 8.0) * 0.35;
+        color += sunColor * pow(sun, 220.0) * 1.4;
+
+        gl_FragColor = vec4(color, 1.0);
     }
 `;
 
@@ -60,20 +77,43 @@ export class ForestWorld {
         this._initScene();
         this._initLights();
 
-        this.island = new Island(this.scene);
+        const quality = this._isSmallScreen() ? 'low' : 'high';
+        const spotConfigs = this.config.spots ?? [];
+
+        // 施設と広場の下は地面を平らにならし、広場から各施設へは土の小道を通す
+        this.island = new Island(this.scene, {
+            quality,
+            flattenZones: [
+                { x: 0, z: 0, r: 5.5, fade: 5 },                    // 中央広場
+                { x: 0, z: 30, r: 3.5, fade: 5 },                   // スポーン地点（家の前）
+                ...spotConfigs.map((s) => ({ x: s.x, z: s.z, r: 4.2, fade: 6 })),
+            ],
+            paths: spotConfigs.map((s) => ({ ax: 0, az: 0, bx: s.x, bz: s.z })),
+        });
 
         const groundHeightAt = (x, z) => this.island.groundHeightAt(x, z);
-        const { spots, obstacles: spotObstacles } = buildSpots(this.scene, this.config.spots, groundHeightAt);
+        const { spots, obstacles: spotObstacles } = buildSpots(this.scene, spotConfigs, groundHeightAt);
         this.spots = spots;
 
         const rng = makeRng(20260913);
         const avoid = [
             ...spotObstacles.map((o) => ({ x: o.x, z: o.z, r: o.r + 4.5 })),
             { x: 0, z: 0, r: 6 },                                                     // 中央広場
-            { x: 0, z: 14, r: 5 },                                                    // スポーン地点
+            { x: 0, z: 30, r: 5 },                                                    // スポーン地点
             { x: this.island.pond.x, z: this.island.pond.z, r: this.island.pond.r + 1.5 }, // 池
         ];
-        const scattered = scatterProps(this.scene, { rng, groundHeightAt, avoid });
+        const scattered = scatterProps(this.scene, { rng, groundHeightAt, avoid, quality });
+
+        // 芝生一面に草を生やす（インスタンシングなので描画は 1 回）
+        createGrassField(this.scene, {
+            rng,
+            island: this.island,
+            count: quality === 'low' ? 3200 : 8200,
+            avoid: [
+                { x: this.island.pond.x, z: this.island.pond.z, r: this.island.pond.r + 1.5 },
+                ...spotObstacles.map((o) => ({ x: o.x, z: o.z, r: o.r + 1.5 })),
+            ],
+        });
 
         this.obstacles = [
             ...spotObstacles,
@@ -96,7 +136,7 @@ export class ForestWorld {
 
         // プレイヤー（ログイン中のユーザー）
         this.player = new Player(this.scene, this.config.player);
-        const spawn = { x: 0, z: 14 };
+        const spawn = { x: 0, z: 30 };
         this.player.position.set(spawn.x, groundHeightAt(spawn.x, spawn.z), spawn.z);
         this.player.facing = Math.PI;
 
@@ -122,23 +162,30 @@ export class ForestWorld {
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this._isSmallScreen() ? 1.5 : 2));
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFShadowMap;
+
+        // 映画的なトーンマッピング。ハイライトが白飛びせず、
+        // 陰から日なたまでの階調が出るので立体感が大きく変わる。
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.renderer.toneMappingExposure = 0.96;
     }
 
     _initScene() {
         this.scene = new THREE.Scene();
-        this.scene.fog = new THREE.Fog(0xcfeaf5, 130, 340);
+        // 遠景をかすませて空気感（奥行き）を出す
+        this.scene.fog = new THREE.Fog(0xbfdcec, 110, 400);
 
-        this.camera = new THREE.PerspectiveCamera(52, 1, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1200);
         this.camera.position.set(0, 12, 30);
 
         const sky = new THREE.Mesh(
-            new THREE.SphereGeometry(420, 24, 16),
+            new THREE.SphereGeometry(500, 32, 20),
             new THREE.ShaderMaterial({
                 uniforms: {
-                    topColor: { value: new THREE.Color(0x3f9ede) },
-                    bottomColor: { value: new THREE.Color(0xdff2fb) },
-                    offset: { value: 40 },
-                    exponent: { value: 0.7 },
+                    zenithColor:  { value: new THREE.Color(0x2f7fd4) },
+                    skyColor:     { value: new THREE.Color(0x63b3e8) },
+                    horizonColor: { value: new THREE.Color(0xdceef6) },
+                    sunDirection: { value: SUN_DIRECTION.clone() },
+                    sunColor:     { value: new THREE.Color(0xfff1cf) },
                 },
                 vertexShader: SKY_VERT,
                 fragmentShader: SKY_FRAG,
@@ -151,24 +198,32 @@ export class ForestWorld {
     }
 
     _initLights() {
-        this.scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-        this.scene.add(new THREE.HemisphereLight(0xbfe3ff, 0x7fa65c, 1.0));
+        // 空と地面からの照り返し（環境光）。影の中を真っ黒にしないための土台。
+        this.scene.add(new THREE.HemisphereLight(0xaed2f0, 0x74924f, 1.15));
+        this.scene.add(new THREE.AmbientLight(0xffffff, 0.22));
 
-        const sun = new THREE.DirectionalLight(0xfff6e2, 2.1);
-        sun.position.set(46, 62, 24);
+        // 主光源＝太陽。強めに当てて、影とのコントラストで立体感を作る。
+        const sun = new THREE.DirectionalLight(0xfff0cd, 2.2);
+        sun.position.copy(SUN_DIRECTION).multiplyScalar(90);
         sun.castShadow = true;
         const shadowSize = this._isSmallScreen() ? 1024 : 2048;
         sun.shadow.mapSize.set(shadowSize, shadowSize);
-        sun.shadow.camera.left = -48;
-        sun.shadow.camera.right = 48;
-        sun.shadow.camera.top = 48;
-        sun.shadow.camera.bottom = -48;
+        sun.shadow.radius = 2.5;          // 影のふちをやわらかく
+        sun.shadow.camera.left = -46;
+        sun.shadow.camera.right = 46;
+        sun.shadow.camera.top = 46;
+        sun.shadow.camera.bottom = -46;
         sun.shadow.camera.near = 10;
-        sun.shadow.camera.far = 180;
+        sun.shadow.camera.far = 200;
         sun.shadow.bias = -0.0006;
         sun.shadow.normalBias = 0.03;
         this.scene.add(sun);
         this.scene.add(sun.target);
+
+        // 反対側からの弱い補助光。影側が潰れず、物の丸みが読み取れるようになる。
+        const fill = new THREE.DirectionalLight(0xb6d2f5, 0.55);
+        fill.position.set(-SUN_DIRECTION.x * 70, 34, -SUN_DIRECTION.z * 70);
+        this.scene.add(fill);
     }
 
     _resize() {
@@ -275,6 +330,7 @@ export class ForestWorld {
         this.player.update(dt, this._moveDirection(), this.input.running, this);
         this._updateCamera(dt);
         this.island.update(this.time);
+        updateWind(this.time);   // 葉と草を風で揺らす
 
         for (const obj of this.animated) obj.userData.animate?.(this.time);
         for (const bird of this.birds) bird.userData.animate?.(this.time);

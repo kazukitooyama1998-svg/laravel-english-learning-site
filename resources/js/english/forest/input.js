@@ -26,6 +26,7 @@ export class Input {
         this.zoom = 0;
         this.running = false;
         this.interactPressed = false;
+        this.enabled = true;      // 模様替え中など、一時的に入力を止めるときに false にする
         this._pointers = new Map();
         this._stick = null;           // { id, baseX, baseY, knob }
         this._dragId = null;
@@ -36,7 +37,7 @@ export class Input {
 
     _bind() {
         this._onKeyDown = (e) => {
-            if (e.repeat) return;
+            if (!this.enabled || e.repeat) return;
             if (e.code in MOVE_KEYS) { this.keys.add(e.code); e.preventDefault(); }
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.running = true;
             if (e.code === 'KeyE' || e.code === 'Enter' || e.code === 'Space') {
@@ -45,6 +46,7 @@ export class Input {
             }
         };
         this._onKeyUp = (e) => {
+            if (!this.enabled) return;
             this.keys.delete(e.code);
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') this.running = false;
         };
@@ -55,6 +57,7 @@ export class Input {
         window.addEventListener('blur', this._onBlur);
 
         this.element.addEventListener('pointerdown', this._onPointerDown = (e) => {
+            if (!this.enabled) return;
             this.element.setPointerCapture?.(e.pointerId);
             this._pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
@@ -69,6 +72,7 @@ export class Input {
         });
 
         this.element.addEventListener('pointermove', this._onPointerMove = (e) => {
+            if (!this.enabled) return;
             const prev = this._pointers.get(e.pointerId);
             if (!prev) return;
             const dx = e.clientX - prev.x;
@@ -118,6 +122,7 @@ export class Input {
         this.element.addEventListener('pointercancel', this._onPointerCancel = endPointer);
 
         this.element.addEventListener('wheel', this._onWheel = (e) => {
+            if (!this.enabled) return;
             this.zoom += e.deltaY * 0.01;
             e.preventDefault();
         }, { passive: false });
@@ -174,6 +179,27 @@ export class Input {
 
     /** HUD のボタンなどから決定を発火させる。 */
     triggerInteract() { this.interactPressed = true; }
+
+    /**
+     * 入力の有効・無効を切り替える。
+     * 模様替えモードのように、同じ画面で別の操作に切り替えるときに使う。
+     */
+    setEnabled(enabled) {
+        this.enabled = enabled;
+        if (enabled) return;
+
+        // 押しっぱなしの状態が残らないよう、いったん全部リセットする
+        this.keys.clear();
+        this.move.x = 0;
+        this.move.y = 0;
+        this.running = false;
+        this.look.dx = 0;
+        this.look.dy = 0;
+        this._pointers.clear();
+        this._stick = null;
+        this._dragId = null;
+        this._hideStick();
+    }
 
     dispose() {
         window.removeEventListener('keydown', this._onKeyDown);
